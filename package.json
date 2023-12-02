@@ -1,0 +1,6 @@
+{
+    "name": "initiative-tracker",
+    "workspaces": [
+        "initiative-tracker-frontend"
+    ]
+}

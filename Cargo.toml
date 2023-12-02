@@ -1,0 +1,2 @@
+[workspace]
+members = ["initiative-tracker-backend"]
