@@ -1,0 +1,10 @@
+{
+    "pages": {
+        "battle": {
+            "columns": {
+                "roundNumber": "Номер раунда",
+                "characters": "Участники"
+            }
+        }
+    }
+}

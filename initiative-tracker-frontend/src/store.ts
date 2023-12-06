@@ -1,13 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/query'
-import { initiativeApi } from './services/initiative'
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { api } from './services/api';
 
 export const store = configureStore({
   reducer: {
-    [initiativeApi.reducerPath]: initiativeApi.reducer,
+    [api.reducerPath]: api.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(initiativeApi.middleware),
-})
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(api.middleware),
+});
 
-setupListeners(store.dispatch)
+setupListeners(store.dispatch);
