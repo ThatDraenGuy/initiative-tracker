@@ -1,10 +1,9 @@
-import './App.css';
 import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import Root from './pages/root';
-import BattleList from './pages/battle-list/battle-list';
+import BattleList from './pages/battle-list/BattleList';
 import { ConfigProvider, theme } from 'antd';
 
 const router = createBrowserRouter([

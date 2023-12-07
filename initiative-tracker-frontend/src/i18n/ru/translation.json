@@ -1,9 +1,26 @@
 {
+    "buttons": {
+        "cancel": "Отменить",
+        "create": "Создать"
+    },
     "pages": {
         "battle": {
+            "buttons": {
+                "startBattle": "Начать новую битву",
+                "endBattle": "Завершить битву"
+            },
             "columns": {
                 "roundNumber": "Номер раунда",
                 "characters": "Участники"
+            },
+            "start": {
+                "title": "Начать новую битву",
+                "controls": {
+                    "characterIds": "Набор персонажей"
+                },
+                "messages": {
+                    "success": "Битва успешно создана"
+                }
             }
         }
     }

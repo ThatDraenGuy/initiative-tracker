@@ -40,7 +40,7 @@ const Root = () => {
           }}
         >
           <img
-            src="public/logo.png"
+            src="/logo.png"
             style={{ width: token.sizeXXL, height: '100%' }}
           />
         </div>

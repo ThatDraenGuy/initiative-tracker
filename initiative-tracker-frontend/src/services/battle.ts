@@ -5,9 +5,21 @@ export const battleApi = api.injectEndpoints({
     getBattles: builder.query<GetBattlesResponse, GetBattlesRequest>({
       query: request => ({
         url: 'battle',
+        method: 'GET',
         params: request,
       }),
       providesTags: ['getBattles'],
+    }),
+    postStartBattle: builder.mutation<
+      PostStartBattleResponse,
+      PostStartBattleRequest
+    >({
+      query: request => ({
+        url: 'battle/start',
+        method: 'POST',
+        body: request,
+      }),
+      invalidatesTags: ['getBattles'],
     }),
   }),
 });
@@ -15,15 +27,21 @@ export const battleApi = api.injectEndpoints({
 export interface GetBattlesRequest {}
 
 export interface GetBattlesResponse {
-  total: number,
-  items: Battle[]
+  total: number;
+  items: Battle[];
 }
+
+export interface PostStartBattleRequest {
+  characterIds: number[];
+}
+
+export interface PostStartBattleResponse {}
 
 export interface Battle {
-  id: number,
-  roundNumber: number,
-  characterAmount: number,
-  currentCharacterIndex: number,
+  id: number;
+  roundNumber: number;
+  characterAmount: number;
+  currentCharacterIndex: number;
 }
 
-export const { useGetBattlesQuery } = battleApi;
+export const { useGetBattlesQuery, usePostStartBattleMutation } = battleApi;
