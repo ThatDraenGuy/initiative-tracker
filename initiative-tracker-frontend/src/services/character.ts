@@ -4,11 +4,11 @@ export const characterApi = api.injectEndpoints({
   endpoints: builder => ({
     getCharacters: builder.query<GetCharactersResponse, GetCharactersRequest>({
       query: request => ({
-        url: 'battle',
+        url: 'character',
         method: 'GET',
         params: request,
       }),
-      providesTags: ['getBattles'],
+      providesTags: ['getCharacters'],
     }),
   }),
 });
@@ -22,8 +22,13 @@ export interface GetCharactersResponse {
 
 export interface Character {
   id: number;
-  playerName?: string;
+  player?: Player;
   statBlock: StatBlock;
+}
+
+export interface Player {
+  id: number;
+  name: string;
 }
 
 export interface StatBlock {
