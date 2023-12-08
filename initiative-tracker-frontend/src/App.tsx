@@ -5,6 +5,7 @@ import { store } from './store';
 import Root from './pages/root';
 import BattleList from './pages/battle-list/BattleList';
 import { ConfigProvider, theme } from 'antd';
+import CharacterList from './pages/character-list/CharacterList';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         path: '/battles',
         element: <BattleList />,
+      },
+      {
+        path: 'characters',
+        element: <CharacterList />,
       },
     ],
   },

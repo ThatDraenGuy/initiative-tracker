@@ -1,10 +1,18 @@
 {
     "buttons": {
         "cancel": "Отменить",
-        "create": "Создать"
+        "create": "Создать",
+        "delete": "Удалить"
+    },
+    "errors": {
+        "required": "Поле обязательно для ввода"
     },
     "pages": {
+        "home": {
+            "label": "Домашняя страница"
+        },
         "battle": {
+            "label": "Битвы",
             "buttons": {
                 "startBattle": "Начать новую битву",
                 "endBattle": "Завершить битву"
@@ -32,6 +40,13 @@
                 "messages": {
                     "success": "Битва успешно удалена"
                 }
+            }
+        },
+        "character": {
+            "label": "Персонажи",
+            "columns": {
+                "player": "Игрок",
+                "statBlock": "Статблок"
             }
         }
     }

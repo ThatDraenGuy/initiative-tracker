@@ -20,10 +20,7 @@ export const battleApi = api.injectEndpoints({
       }),
       invalidatesTags: ['getBattles'],
     }),
-    postStartBattle: builder.mutation<
-        PostStartBattleResponse,
-        PostStartBattleRequest
-    >({
+    startBattle: builder.mutation<StartBattleResponse, StartBattleRequest>({
       query: request => ({
         url: 'battle/start',
         method: 'POST',
@@ -31,8 +28,6 @@ export const battleApi = api.injectEndpoints({
       }),
       invalidatesTags: ['getBattles'],
     }),
-
-
   }),
 });
 
@@ -50,11 +45,11 @@ export interface DeleteCharacterBattleRequest {
 export interface DeleteCharacterBattleResponse {}
 
 
-export interface PostStartBattleRequest {
+export interface StartBattleRequest {
   characterIds: number[];
 }
 
-export interface PostStartBattleResponse {}
+export type StartBattleResponse = Battle;
 
 export interface Battle {
   id: number;
@@ -63,4 +58,4 @@ export interface Battle {
   currentCharacterIndex: number;
 }
 
-export const { useGetBattlesQuery, usePostStartBattleMutation, useDeleteCharacterMutation } = battleApi;
+export const { useGetBattlesQuery, useStartBattleMutation, useDeleteCharacterMutation } = battleApi;
