@@ -83,7 +83,7 @@ const BattleList = () => {
             />
             <EndBattle
                 open={openedModal === 'end_battle' && selectedRow !== undefined}
-                characterId={selectedRow === undefined ? 0 : selectedRow}
+                battleId={selectedRow === undefined ? 0 : selectedRow}
                 onClose={() => {
                     setOpenedModal('undefined')
                     setSelectedRow(undefined)

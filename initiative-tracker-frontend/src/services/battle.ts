@@ -15,7 +15,7 @@ export const battleApi = api.injectEndpoints({
         DeleteBattleRequest
     >({
       query: request => ({
-        url: 'battle/' + request.characterId + '/end',
+        url: 'battle/' + request.battleId + '/end',
         method: 'DELETE',
       }),
       invalidatesTags: ['getBattles'],
@@ -39,7 +39,7 @@ export interface GetBattlesResponse {
 }
 
 export interface DeleteBattleRequest {
-  characterId: number;
+  battleId: number;
 }
 
 export interface DeleteBattleResponse {}
