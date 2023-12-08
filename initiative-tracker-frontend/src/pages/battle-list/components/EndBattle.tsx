@@ -1,6 +1,7 @@
 import {Button, Spin, message, Modal} from 'antd';
 import {useTranslation} from 'react-i18next';
-import {useDeleteCharacterMutation} from '../../../services/battle';
+import {useDeleteBattleMutation} from '../../../services/battle';
+import {useEffect} from "react";
 
 export interface DeleteCharacterProps {
     open: boolean;
@@ -17,7 +18,14 @@ const EndBattle = ({onClose, open, characterId}: DeleteCharacterProps) => {
     const {t} = useTranslation('translation', {
         keyPrefix: 'pages.battle.end',
     });
-    const [deleteCharacter, {isLoading, isSuccess}] = useDeleteCharacterMutation();
+    const [deleteCharacter, {isLoading, isSuccess}] = useDeleteBattleMutation();
+
+    useEffect(() => {
+        if (isSuccess) {
+            messageApi.success(t('messages.success'));
+            onClose();
+        }
+    }, [isSuccess]);
 
     const handleOk = async () => {
         await onSubmit({
@@ -33,10 +41,6 @@ const EndBattle = ({onClose, open, characterId}: DeleteCharacterProps) => {
         await deleteCharacter({
             characterId: data.characterId,
         });
-
-        if (isSuccess) {
-            messageApi.success(t('messages.success'));
-        }
     };
 
     return (
