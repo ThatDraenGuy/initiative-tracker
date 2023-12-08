@@ -22,12 +22,6 @@ const EndBattle = ({ onClose, open, battleId }: EndBattleProps) => {
       onClose();
     }
   }, [isSuccess]);
-  useEffect(() => {
-    if (isSuccess) {
-      messageApi.success(t('messages.success'));
-      onClose();
-    }
-  }, [isSuccess]);
 
   const handleOk = async () => {
     await deleteBattle({
@@ -50,10 +44,10 @@ const EndBattle = ({ onClose, open, battleId }: EndBattleProps) => {
           onOk={handleOk}
           onCancel={handleCancel}
           footer={[
-            <Button key="submit" onClick={handleOk}>
+            <Button key="submit" type="primary" onClick={handleOk}>
               {t('buttons.delete')}
             </Button>,
-            <Button key="back" type="primary" onClick={handleCancel}>
+            <Button key="back" onClick={handleCancel}>
               {t('buttons.cancel')}
             </Button>,
           ]}
