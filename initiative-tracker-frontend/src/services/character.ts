@@ -1,4 +1,5 @@
 import { api } from './api';
+import { Player } from './player';
 
 export const characterApi = api.injectEndpoints({
   endpoints: builder => ({
@@ -10,6 +11,17 @@ export const characterApi = api.injectEndpoints({
       }),
       providesTags: ['getCharacters'],
     }),
+    createCharacter: builder.mutation<
+      CreateCharacterResponse,
+      CreateCharacterRequest
+    >({
+      query: request => ({
+        url: 'character',
+        method: 'POST',
+        body: request,
+      }),
+      invalidatesTags: ['getCharacters'],
+    }),
   }),
 });
 
@@ -20,15 +32,13 @@ export interface GetCharactersResponse {
   items: Character[];
 }
 
+export interface CreateCharacterRequest {}
+export interface CreateCharacterResponse {}
+
 export interface Character {
   id: number;
   player?: Player;
   statBlock: StatBlock;
-}
-
-export interface Player {
-  id: number;
-  name: string;
 }
 
 export interface StatBlock {
@@ -48,4 +58,5 @@ export interface CreatureType {
   name: string;
 }
 
-export const { useGetCharactersQuery } = characterApi;
+export const { useGetCharactersQuery, useCreateCharacterMutation } =
+  characterApi;

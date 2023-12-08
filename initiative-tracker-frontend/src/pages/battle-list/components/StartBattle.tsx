@@ -1,10 +1,10 @@
-import { Button, Drawer, Select, Space, Spin, message, theme } from 'antd';
-import { Controller, useForm } from 'react-hook-form';
+import { Button, Drawer, Select, Space, Spin, message } from 'antd';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { usePostStartBattleMutation } from '../../../services/battle';
+import { useStartBattleMutation } from '../../../services/battle';
 import { useGetCharactersQuery } from '../../../services/character';
-import Title from 'antd/lib/typography/Title';
 import { useEffect } from 'react';
+import AppController from '../../../components/AppController';
 
 export interface StartBattleProps {
   open: boolean;
@@ -16,13 +16,12 @@ interface StartBattleFormProps {
 }
 
 const StartBattle = ({ onClose, open }: StartBattleProps) => {
-  const { token } = theme.useToken();
   const [messageApi, contextHolder] = message.useMessage();
   const { t } = useTranslation('translation', {
     keyPrefix: 'pages.battle.start',
   });
   const { t: commonT } = useTranslation();
-  const [startBattle, { isLoading, isSuccess }] = usePostStartBattleMutation();
+  const [startBattle, { isLoading, isSuccess }] = useStartBattleMutation();
   const { data: characters, isLoading: isCharactersLoading } =
     useGetCharactersQuery({});
   const { handleSubmit, control, reset } = useForm<StartBattleFormProps>();
@@ -33,6 +32,13 @@ const StartBattle = ({ onClose, open }: StartBattleProps) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (isSuccess) {
+      messageApi.success(t('messages.success'));
+      onClose();
+    }
+  }, [isSuccess]);
+
   const characterOptions = characters?.items.map(character => ({
     label: character.statBlock.entityName,
     value: character.id,
@@ -42,10 +48,6 @@ const StartBattle = ({ onClose, open }: StartBattleProps) => {
     await startBattle({
       characterIds: data.characterIds,
     });
-
-    if (isSuccess) {
-      messageApi.success(t('messages.success'));
-    }
   };
 
   return (
@@ -68,30 +70,29 @@ const StartBattle = ({ onClose, open }: StartBattleProps) => {
           }
         >
           <Space direction="vertical" style={{ width: '100%' }}>
-            <>
-              <Title level={4} style={{ color: token.colorText }}>
-                {t('controls.characterIds')}
-              </Title>
-              <Controller
-                control={control}
-                name="characterIds"
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ width: '100%' }}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    loading={isCharactersLoading}
-                    options={characterOptions}
-                    value={value}
-                  ></Select>
-                )}
-              />
-            </>
+            <AppController
+              title={t('controls.characterIds')}
+              control={control}
+              name="characterIds"
+              rules={{
+                required: {
+                  value: true,
+                  message: commonT('errors.required'),
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{ width: '100%' }}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  loading={isCharactersLoading}
+                  options={characterOptions}
+                  value={value}
+                />
+              )}
+            />
           </Space>
         </Drawer>
       </Spin>

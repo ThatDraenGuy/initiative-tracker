@@ -2,25 +2,38 @@
 import { Layout, Menu, MenuProps, theme } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import { SetStateAction, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 const Root = () => {
-  const [current, setCurrent] = useState('home');
+  const { t } = useTranslation('translation', { keyPrefix: 'pages' });
+  const location = useLocation();
+
   const navigate = useNavigate();
   const { token } = theme.useToken();
 
   const menu_items = [
     {
-      label: 'Home',
+      label: t('home.label'),
       key: 'home',
       path: '/',
     },
     {
-      label: 'Battles',
+      label: t('battle.label'),
       key: 'battles',
       path: '/battles',
     },
+    {
+      label: t('character.label'),
+      key: 'characters',
+      path: '/characters',
+    },
   ];
+
+  const [current, setCurrent] = useState(
+    menu_items.find(item => item.path === location.pathname)?.key ?? 'home',
+  );
 
   const onClick: MenuProps['onClick'] = (e: {
     key: SetStateAction<string>;
