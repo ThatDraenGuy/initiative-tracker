@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        INSERT INTO ability (ability_name) \n        VALUES ($1) \n        RETURNING ability_id, ability_name;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "ability_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "ability_name",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "a38ed669f52dc437ab27661719120a085a28afa4f5bd66110b44df19bf89c796"
+}

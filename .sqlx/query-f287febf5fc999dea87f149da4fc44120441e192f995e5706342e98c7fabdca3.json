@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT b.*, COUNT(ie.*) as \"character_amount!\"\n        FROM battle b\n        LEFT JOIN initiative_entry ie ON b.battle_id = ie.battle_id\n        WHERE b.battle_id = $1\n        GROUP BY b.battle_id;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "battle_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "round_number",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "current_character_index",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "character_amount!",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      null
+    ]
+  },
+  "hash": "f287febf5fc999dea87f149da4fc44120441e192f995e5706342e98c7fabdca3"
+}

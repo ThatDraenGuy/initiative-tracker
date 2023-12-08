@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT * FROM ability \n            WHERE ability_name LIKE $1;\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "ability_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "ability_name",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "b896edabffb1ca9032a71afb13216c5abc016c1e56e6b4a398036beb4262aba1"
+}
