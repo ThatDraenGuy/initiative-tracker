@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS damage_type_modifiers (
 ------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS player (
   player_id serial8 NOT NULL,
-  player_name varchar(20),
+  player_name varchar(20) NOT NULL,
   CONSTRAINT player_pk PRIMARY KEY (player_id), 
   CONSTRAINT name_check CHECK (
     (
@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS character (
   stat_block_id int8 NOT NULL, 
   CONSTRAINT character_pk PRIMARY KEY (character_id), 
   CONSTRAINT character_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id), 
-  CONSTRAINT character_fk1 FOREIGN KEY (player_id) REFERENCES player(player_id)
+  CONSTRAINT character_fk1 FOREIGN KEY (player_id) REFERENCES player(player_id) ON DELETE SET NULL
 );
 CREATE TABLE IF NOT EXISTS current_stats (
   current_stats_id serial8 NOT NULL, 

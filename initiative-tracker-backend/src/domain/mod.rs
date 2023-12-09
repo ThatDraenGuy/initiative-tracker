@@ -14,6 +14,7 @@ pub fn configure_domain(cfg: &mut web::ServiceConfig) {
     ability::handler::configure(cfg);
     battle::handler::configure(cfg);
     character::handler::configure(cfg);
+    player::handler::configure(cfg);
 }
 
 #[derive(Serialize)]

@@ -3,6 +3,7 @@ use sqlx::FromRow;
 
 use super::HasId;
 
+pub mod actions;
 pub mod handler;
 
 #[derive(Serialize, Deserialize, FromRow)]
