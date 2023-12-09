@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        INSERT INTO player (player_name) \n        VALUES ($1)\n        RETURNING player_id, player_name;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "player_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "player_name",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "f3b805169f76a2251b718c218bd0adc0b78f8b7715711ffd3914f1c1ec1e6390"
+}
