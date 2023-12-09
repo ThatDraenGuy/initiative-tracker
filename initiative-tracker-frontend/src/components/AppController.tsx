@@ -1,5 +1,5 @@
 import { Form, theme } from 'antd';
-import Title from 'antd/es/skeleton/Title';
+import Title from 'antd/lib/typography/Title';
 import {
   Controller,
   ControllerProps,
@@ -25,7 +25,7 @@ const AppController = <
   return (
     <>
       {props.title && (
-        <Title level={4} style={{ color: token.colorText }}>
+        <Title level={5} style={{ color: token.colorText }}>
           {props.title}
         </Title>
       )}

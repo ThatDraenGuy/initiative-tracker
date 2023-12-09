@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
-use super::{player::Player, stat_block::StatBlock, Nullable};
+use super::{player::Player, stat_block_brief::StatBlockBrief, Nullable};
 
 pub mod actions;
 pub mod handler;
@@ -12,5 +12,5 @@ pub struct Character {
     #[sqlx(flatten)]
     pub player: Nullable<Player>,
     #[sqlx(flatten)]
-    pub stat_block: StatBlock,
+    pub stat_block: StatBlockBrief,
 }

@@ -1,5 +1,4 @@
 use initiative_tracker_backend::derive_response;
-use serde::Serialize;
 
 use super::CreatureType;
 

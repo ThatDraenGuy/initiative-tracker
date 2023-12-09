@@ -1,19 +1,11 @@
-import {
-  Button,
-  Drawer,
-  Form,
-  Select,
-  Space,
-  Spin,
-  message,
-  theme,
-} from 'antd';
+import { Button, Drawer, Select, Space, Spin, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useCreateCharacterMutation } from '../../../services/character';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
-import Title from 'antd/lib/typography/Title';
 import { useGetPlayersQuery } from '../../../services/player';
+import { useGetStatBlocksQuery } from '../../../services/statBlock';
+import AppController from '../../../components/AppController';
 
 export interface CreateCharacterProps {
   open: boolean;
@@ -26,10 +18,9 @@ interface CreateCharacterFormProps {
 }
 
 const CreateCharacter = ({ open, onClose }: CreateCharacterProps) => {
-  const { token } = theme.useToken();
   const [messageApi, contextHolder] = message.useMessage();
   const { t } = useTranslation('translation', {
-    keyPrefix: 'pages.battle.start',
+    keyPrefix: 'pages.character.create',
   });
   const { t: commonT } = useTranslation();
   const { handleSubmit, control, reset } = useForm<CreateCharacterFormProps>();
@@ -37,6 +28,8 @@ const CreateCharacter = ({ open, onClose }: CreateCharacterProps) => {
   const [createCharacter, { isLoading, isSuccess }] =
     useCreateCharacterMutation();
   const { data: players, isLoading: isPlayersLoading } = useGetPlayersQuery({});
+  const { data: statBlocks, isLoading: isStatBlocksLoading } =
+    useGetStatBlocksQuery({});
 
   useEffect(() => {
     reset({
@@ -55,6 +48,10 @@ const CreateCharacter = ({ open, onClose }: CreateCharacterProps) => {
   const playerOptions = players?.items.map(player => ({
     label: player.name,
     value: player.id,
+  }));
+  const statBlockOptions = statBlocks?.items.map(statBlock => ({
+    label: statBlock.entityName,
+    value: statBlock.id,
   }));
 
   const onSubmit = async (data: CreateCharacterFormProps) => {
@@ -83,35 +80,44 @@ const CreateCharacter = ({ open, onClose }: CreateCharacterProps) => {
           }
         >
           <Space direction="vertical" style={{ width: '100%' }}>
-            <>
-              <Title level={4} style={{ color: token.colorText }}>
-                {t('controls.playerIds')}
-              </Title>
-              <Controller
-                control={control}
-                name="playerId"
-                render={({
-                  field: { onChange, onBlur, value },
-                  fieldState: { error },
-                }) => (
-                  <Form.Item
-                    validateStatus={error ? 'error' : 'validating'}
-                    help={error ? error.message : ''}
-                  >
-                    <Select
-                      mode="tags"
-                      allowClear
-                      style={{ width: '100%' }}
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      loading={isPlayersLoading}
-                      options={playerOptions}
-                      value={value}
-                    />
-                  </Form.Item>
-                )}
-              />
-            </>
+            <AppController
+              title={t('controls.playerId')}
+              control={control}
+              name="playerId"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Select
+                  allowClear
+                  style={{ width: '100%' }}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  loading={isPlayersLoading}
+                  options={playerOptions}
+                  value={value}
+                />
+              )}
+            />
+            <AppController
+              title={t('controls.statBlockId')}
+              control={control}
+              name="statBlockId"
+              rules={{
+                required: {
+                  value: true,
+                  message: commonT('errors.required'),
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Select
+                  allowClear
+                  style={{ width: '100%' }}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  loading={isStatBlocksLoading}
+                  options={statBlockOptions}
+                  value={value}
+                />
+              )}
+            />
           </Space>
         </Drawer>
       </Spin>

@@ -1,12 +1,26 @@
-use initiative_tracker_backend::derive_response;
-use serde::Serialize;
+use actix_web::{
+    get,
+    web::{self, Data},
+};
+use initiative_tracker_backend::{derive_request, derive_response};
 
-use crate::domain::creature_type::handler::CreatureTypeResponse;
+use crate::{
+    domain::{creature_type::handler::CreatureTypeResponse, PageResponse},
+    errors::AppResult,
+    DbPool, ValidQuery,
+};
 
-use super::StatBlock;
+use super::{actions, StatBlockBrief};
+
+pub fn configure(cfg: &mut web::ServiceConfig) {
+    cfg.service(web::scope("/statBlockBrief").service(find));
+}
+
+#[derive_request]
+pub struct FindStatBlockBriefRequest {}
 
 #[derive_response]
-pub struct StatBlockResponse {
+pub struct StatBlockBriefResponse {
     pub id: i64,
     pub entity_name: String,
     pub hit_points: i32,
@@ -20,8 +34,8 @@ pub struct StatBlockResponse {
     pub level: Option<i32>,
     pub creature_type: CreatureTypeResponse,
 }
-impl From<StatBlock> for StatBlockResponse {
-    fn from(value: StatBlock) -> Self {
+impl From<StatBlockBrief> for StatBlockBriefResponse {
+    fn from(value: StatBlockBrief) -> Self {
         Self {
             id: value.stat_block_id,
             entity_name: value.entity_name,
@@ -34,4 +48,12 @@ impl From<StatBlock> for StatBlockResponse {
             creature_type: value.creature_type.into(),
         }
     }
+}
+
+#[get("")]
+async fn find(
+    condition: ValidQuery<FindStatBlockBriefRequest>,
+    db_pool: Data<DbPool>,
+) -> AppResult<PageResponse<StatBlockBriefResponse>> {
+    Ok(actions::find(&db_pool, &condition).await?.map_into())
 }

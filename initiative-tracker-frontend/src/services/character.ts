@@ -1,5 +1,6 @@
 import { api } from './api';
 import { Player } from './player';
+import { StatBlock } from './statBlock';
 
 export const characterApi = api.injectEndpoints({
   endpoints: builder => ({
@@ -32,30 +33,16 @@ export interface GetCharactersResponse {
   items: Character[];
 }
 
-export interface CreateCharacterRequest {}
-export interface CreateCharacterResponse {}
+export interface CreateCharacterRequest {
+  playerId?: number;
+  statBlockId: number;
+}
+export type CreateCharacterResponse = Character;
 
 export interface Character {
   id: number;
   player?: Player;
   statBlock: StatBlock;
-}
-
-export interface StatBlock {
-  id: number;
-  entityName: string;
-  hitPoints: number;
-  hitDiceType?: number;
-  hitDiceCount?: number;
-  armorClass: number;
-  speed: number;
-  level: number;
-  creatureType: CreatureType;
-}
-
-export interface CreatureType {
-  id: number;
-  name: string;
 }
 
 export const { useGetCharactersQuery, useCreateCharacterMutation } =

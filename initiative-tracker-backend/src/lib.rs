@@ -13,7 +13,7 @@ pub fn derive_request(
 ) -> proc_macro::TokenStream {
     let input: TokenStream = input.into();
     let output = quote! {
-        #[derive(Deserialize, Validate)]
+        #[derive(serde::Deserialize, validator::Validate)]
         #[serde(rename_all = "camelCase")]
         #input
     };
@@ -27,7 +27,7 @@ pub fn derive_response(
 ) -> proc_macro::TokenStream {
     let input: TokenStream = input.into();
     let output = quote! {
-        #[derive(Serialize)]
+        #[derive(serde::Serialize)]
         #[serde(rename_all = "camelCase")]
         #input
     };

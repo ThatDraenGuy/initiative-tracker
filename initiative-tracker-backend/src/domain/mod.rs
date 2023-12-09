@@ -3,7 +3,7 @@ pub mod battle;
 pub mod character;
 pub mod creature_type;
 pub mod player;
-pub mod stat_block;
+pub mod stat_block_brief;
 
 use actix_web::{web, HttpResponse, Responder};
 use itertools::Itertools;
@@ -15,6 +15,7 @@ pub fn configure_domain(cfg: &mut web::ServiceConfig) {
     battle::handler::configure(cfg);
     character::handler::configure(cfg);
     player::handler::configure(cfg);
+    stat_block_brief::handler::configure(cfg);
 }
 
 #[derive(Serialize)]

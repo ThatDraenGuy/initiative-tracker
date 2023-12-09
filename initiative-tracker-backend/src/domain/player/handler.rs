@@ -3,8 +3,6 @@ use actix_web::{
     web::{self, Data, Json, Path},
 };
 use initiative_tracker_backend::{derive_request, derive_response};
-use serde::{Deserialize, Serialize};
-use validator::Validate;
 
 use crate::{domain::PageResponse, errors::AppResult, DbPool, ValidJson, ValidQuery};
 

@@ -47,6 +47,13 @@
             "columns": {
                 "player": "Игрок",
                 "statBlock": "Статблок"
+            },
+            "create": {
+                "title": "Создать нового персонажа",
+                "controls": {
+                    "playerId": "Игрок",
+                    "statBlockId": "Статблок"
+                }
             }
         }
     }
