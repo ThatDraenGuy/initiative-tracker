@@ -1,9 +1,9 @@
+use initiative_tracker_backend::derive_response;
 use serde::Serialize;
 
 use super::CreatureType;
 
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive_response]
 pub struct CreatureTypeResponse {
     pub id: i64,
     pub name: String,

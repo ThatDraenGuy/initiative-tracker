@@ -1,11 +1,11 @@
+use initiative_tracker_backend::derive_response;
 use serde::Serialize;
 
 use crate::domain::creature_type::handler::CreatureTypeResponse;
 
 use super::StatBlock;
 
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive_response]
 pub struct StatBlockResponse {
     pub id: i64,
     pub entity_name: String,

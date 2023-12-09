@@ -1272,8 +1272,11 @@ dependencies = [
  "dotenvy",
  "itertools",
  "once_cell",
+ "proc-macro2",
+ "quote",
  "serde",
  "sqlx",
+ "syn 2.0.39",
  "thiserror",
  "validator",
 ]

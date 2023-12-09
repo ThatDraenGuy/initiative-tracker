@@ -2,6 +2,7 @@ use actix_web::{
     delete, get, post,
     web::{self, Data, Json, Path},
 };
+use initiative_tracker_backend::{derive_request, derive_response};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 
@@ -18,18 +19,15 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     );
 }
 
-#[derive(Deserialize, Validate)]
-#[serde(rename_all = "camelCase")]
+#[derive_request]
 pub struct FindPlayerRequest {}
 
-#[derive(Deserialize, Validate)]
-#[serde(rename_all = "camelCase")]
+#[derive_request]
 pub struct CreatePlayerRequest {
     pub name: String,
 }
 
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive_response]
 pub struct PlayerResponse {
     pub id: i64,
     pub name: String,

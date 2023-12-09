@@ -2,6 +2,7 @@ use actix_web::{
     get,
     web::{self, Data},
 };
+use initiative_tracker_backend::derive_response;
 use serde::Serialize;
 
 use super::{actions, Character};
@@ -17,8 +18,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(web::scope("/character").service(find));
 }
 
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive_response]
 struct CharacterResponse {
     pub id: i64,
     #[serde(skip_serializing_if = "Option::is_none")]
