@@ -59,10 +59,9 @@ const CharacterList = () => {
           loading={isLoading}
         />
       </Space>
-      <CreateCharacter
-        open={openedModal === 'create_character'}
-        onClose={() => setOpenedModal('')}
-      />
+      {openedModal === 'create_character' && (
+        <CreateCharacter onClose={() => setOpenedModal('')} />
+      )}
     </>
   );
 };
