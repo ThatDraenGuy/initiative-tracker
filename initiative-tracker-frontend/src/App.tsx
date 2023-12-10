@@ -10,7 +10,7 @@ import Root from './pages/root';
 import BattleList from './pages/battle-list/BattleList';
 import CharacterList from './pages/character-list/CharacterList';
 import PlayerList from './pages/players-list/PlayerList';
-import HomeScreen from "./pages/home-screen/HomeScreen";
+import HomeScreen from './pages/home-screen/HomeScreen';
 
 const router = createBrowserRouter([
   {
