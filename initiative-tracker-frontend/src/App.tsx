@@ -10,6 +10,7 @@ import Root from './pages/root';
 import BattleList from './pages/battle-list/BattleList';
 import CharacterList from './pages/character-list/CharacterList';
 import PlayerList from './pages/players-list/PlayerList';
+import HomeScreen from "./pages/home-screen/HomeScreen";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: 'players',
         element: <PlayerList />,
+      },
+      {
+        path: '/',
+        element: <HomeScreen />,
       },
     ],
   },
