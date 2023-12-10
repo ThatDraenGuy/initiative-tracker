@@ -12,7 +12,7 @@ export const battleApi = api.injectEndpoints({
     }),
     deleteBattle: builder.mutation<DeleteBattleResponse, DeleteBattleRequest>({
       query: request => ({
-        url: 'battle/' + request.battleId + '/end',
+        url: `battle/${request.id}/end`,
         method: 'DELETE',
       }),
       invalidatesTags: ['getBattles'],
@@ -36,7 +36,7 @@ export interface GetBattlesResponse {
 }
 
 export interface DeleteBattleRequest {
-  battleId: number;
+  id: number;
 }
 
 export interface DeleteBattleResponse {}

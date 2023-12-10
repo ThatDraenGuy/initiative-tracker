@@ -1,9 +1,10 @@
 import { Button, Space, Table, theme } from 'antd';
 import { useState } from 'react';
-import { useGetCharactersQuery } from '../../services/character';
+import { Character, useGetCharactersQuery } from '../../services/character';
 import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import CreateCharacter from './components/CreateCharacter';
+import DeleteCharacter from './components/DeleteCharacter';
 
 const CharacterList = () => {
   const { token } = theme.useToken();
@@ -11,6 +12,7 @@ const CharacterList = () => {
   const { t: commonT } = useTranslation();
   const [openedModal, setOpenedModal] = useState('');
   const { data: characters, isLoading } = useGetCharactersQuery({});
+  const [selectedRow, setSelectedRow] = useState<Character | undefined>();
 
   const columns = [
     {
@@ -47,6 +49,7 @@ const CharacterList = () => {
           </Button>
           <Button
             icon={<DeleteOutlined />}
+            disabled={selectedRow === undefined}
             onClick={() => setOpenedModal('delete_character')}
           >
             {commonT('buttons.delete')}
@@ -57,10 +60,31 @@ const CharacterList = () => {
           dataSource={dataSource}
           rowKey={'id'}
           loading={isLoading}
+          onRow={(record: Character) => ({
+            onClick: () =>
+              setSelectedRow(
+                selectedRow?.id === record.id ? undefined : record,
+              ),
+          })}
+          rowSelection={{
+            type: 'radio',
+            selectedRowKeys: [selectedRow?.id],
+            columnWidth: 0,
+            renderCell: () => {},
+          }}
         />
       </Space>
       {openedModal === 'create_character' && (
         <CreateCharacter onClose={() => setOpenedModal('')} />
+      )}
+      {openedModal === 'delete_character' && selectedRow?.id && (
+        <DeleteCharacter
+          characterId={selectedRow.id}
+          onClose={() => {
+            setOpenedModal('');
+            setSelectedRow(undefined);
+          }}
+        />
       )}
     </>
   );

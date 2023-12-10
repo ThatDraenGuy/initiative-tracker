@@ -23,6 +23,15 @@ export const characterApi = api.injectEndpoints({
       }),
       invalidatesTags: ['getCharacters'],
     }),
+    deleteCharacter: builder.mutation<
+      DeleteCharacterResponse,
+      DeleteCharacterRequest
+    >({
+      query: request => ({
+        url: `character/${request.id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -39,11 +48,19 @@ export interface CreateCharacterRequest {
 }
 export type CreateCharacterResponse = Character;
 
+export interface DeleteCharacterRequest {
+  id: number;
+}
+export interface DeleteCharacterResponse {}
+
 export interface Character {
   id: number;
   player?: Player;
   statBlock: StatBlockBrief;
 }
 
-export const { useGetCharactersQuery, useCreateCharacterMutation } =
-  characterApi;
+export const {
+  useGetCharactersQuery,
+  useCreateCharacterMutation,
+  useDeleteCharacterMutation,
+} = characterApi;

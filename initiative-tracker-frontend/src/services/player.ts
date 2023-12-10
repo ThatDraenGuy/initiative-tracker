@@ -12,7 +12,7 @@ export const playerApi = api.injectEndpoints({
     }),
     deletePlayer: builder.mutation<DeletePlayerResponse, DeletePlayerRequest>({
       query: request => ({
-        url: 'player/' + request.id,
+        url: `player/${request.id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['getPlayers'],

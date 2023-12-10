@@ -1,23 +1,24 @@
-import { Button, App } from 'antd';
-import { useTranslation } from 'react-i18next';
 import { useEffect, useRef } from 'react';
-import { useDeletePlayerMutation } from '../../../services/player';
 import ConfirmationModal, {
   ConfirmationModalRef,
 } from '../../../components/ConfirmationModal';
+import { App, Button } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { useDeleteCharacterMutation } from '../../../services/character';
 
-export interface DeletePlayerProps {
+export interface DeleteCharacterProps {
+  characterId: number;
   onClose: () => void;
-  playerId: number;
 }
 
-const DeletePlayer = ({ onClose, playerId }: DeletePlayerProps) => {
+const DeleteCharacter = ({ characterId, onClose }: DeleteCharacterProps) => {
   const modal = useRef<ConfirmationModalRef>();
   const { message } = App.useApp();
   const { t } = useTranslation('translation', {
-    keyPrefix: 'pages.player.delete',
+    keyPrefix: 'pages.character.delete',
   });
-  const [deletePlayer, { isLoading, isSuccess }] = useDeletePlayerMutation();
+  const [deleteCharacter, { isLoading, isSuccess }] =
+    useDeleteCharacterMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -27,8 +28,8 @@ const DeletePlayer = ({ onClose, playerId }: DeletePlayerProps) => {
   }, [isSuccess]);
 
   const handleOk = async () => {
-    await deletePlayer({
-      id: playerId,
+    await deleteCharacter({
+      id: characterId,
     });
   };
 
@@ -53,4 +54,4 @@ const DeletePlayer = ({ onClose, playerId }: DeletePlayerProps) => {
   );
 };
 
-export default DeletePlayer;
+export default DeleteCharacter;

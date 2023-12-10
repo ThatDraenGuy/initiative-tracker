@@ -28,7 +28,7 @@ const EndBattle = ({ onClose, battleId }: EndBattleProps) => {
 
   const handleOk = async () => {
     await deleteBattle({
-      battleId: battleId,
+      id: battleId,
     });
   };
 
