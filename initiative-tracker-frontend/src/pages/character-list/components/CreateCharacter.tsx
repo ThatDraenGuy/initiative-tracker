@@ -2,11 +2,11 @@ import { App, Button, Select, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useCreateCharacterMutation } from '../../../services/character';
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useGetPlayersQuery } from '../../../services/player';
 import { useGetStatBlocksBriefQuery } from '../../../services/statBlock';
 import AppController from '../../../components/AppController';
-import RightModal from '../../../components/RightModal';
+import RightModal, { RightModalRef } from '../../../components/RightModal';
 
 export interface CreateCharacterProps {
   onClose: () => void;
@@ -18,6 +18,7 @@ interface CreateCharacterFormProps {
 }
 
 const CreateCharacter = ({ onClose }: CreateCharacterProps) => {
+  const modal = useRef<RightModalRef>();
   const { message } = App.useApp();
   const { t } = useTranslation('translation', {
     keyPrefix: 'pages.character.create',
@@ -41,7 +42,7 @@ const CreateCharacter = ({ onClose }: CreateCharacterProps) => {
   useEffect(() => {
     if (isSuccess) {
       message.success(t('messages.success'));
-      onClose();
+      modal.current?.close();
     }
   }, [isSuccess]);
 
@@ -62,12 +63,15 @@ const CreateCharacter = ({ onClose }: CreateCharacterProps) => {
 
   return (
     <RightModal
+      ref={modal}
       title={t('title')}
       onClose={onClose}
       isLoading={isLoading}
       extra={
         <Space>
-          <Button onClick={onClose}>{commonT('buttons.cancel')}</Button>
+          <Button onClick={modal.current?.close}>
+            {commonT('buttons.cancel')}
+          </Button>
           <Button type="primary" onClick={handleSubmit(onSubmit)}>
             {commonT('buttons.create')}
           </Button>

@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useStartBattleMutation } from '../../../services/battle';
 import { useGetCharactersQuery } from '../../../services/character';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import AppController from '../../../components/AppController';
-import RightModal from '../../../components/RightModal';
+import RightModal, { RightModalRef } from '../../../components/RightModal';
 
 export interface StartBattleProps {
   onClose: () => void;
@@ -16,6 +16,7 @@ interface StartBattleFormProps {
 }
 
 const StartBattle = ({ onClose }: StartBattleProps) => {
+  const modal = useRef<RightModalRef>();
   const { message } = App.useApp();
   const { t } = useTranslation('translation', {
     keyPrefix: 'pages.battle.start',
@@ -35,7 +36,7 @@ const StartBattle = ({ onClose }: StartBattleProps) => {
   useEffect(() => {
     if (isSuccess) {
       message.success(t('messages.success'));
-      onClose();
+      modal.current?.close();
     }
   }, [isSuccess]);
 
@@ -52,12 +53,15 @@ const StartBattle = ({ onClose }: StartBattleProps) => {
 
   return (
     <RightModal
+      ref={modal}
       title={t('title')}
       onClose={onClose}
       isLoading={isLoading}
       extra={
         <Space>
-          <Button onClick={onClose}>{commonT('buttons.cancel')}</Button>
+          <Button onClick={modal.current?.close}>
+            {commonT('buttons.cancel')}
+          </Button>
           <Button type="primary" onClick={handleSubmit(onSubmit)}>
             {commonT('buttons.create')}
           </Button>

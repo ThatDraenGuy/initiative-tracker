@@ -1,8 +1,10 @@
 import { Button, App } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDeletePlayerMutation } from '../../../services/player';
-import ConfirmationModal from '../../../components/ConfirmationModal';
+import ConfirmationModal, {
+  ConfirmationModalRef,
+} from '../../../components/ConfirmationModal';
 
 export interface DeletePlayerProps {
   onClose: () => void;
@@ -14,6 +16,7 @@ interface PlayerDeleteFormProps {
 }
 
 const DeletePlayer = ({ onClose, playerId }: DeletePlayerProps) => {
+  const modal = useRef<ConfirmationModalRef>();
   const { message } = App.useApp();
   const { t } = useTranslation('translation', {
     keyPrefix: 'pages.player.delete',
@@ -23,7 +26,7 @@ const DeletePlayer = ({ onClose, playerId }: DeletePlayerProps) => {
   useEffect(() => {
     if (isSuccess) {
       message.success(t('messages.success'));
-      onClose();
+      modal.current?.close();
     }
   }, [isSuccess]);
 
@@ -31,12 +34,8 @@ const DeletePlayer = ({ onClose, playerId }: DeletePlayerProps) => {
     await onSubmit({
       id: playerId,
     });
-    onClose();
   };
 
-  const handleCancel = async () => {
-    onClose();
-  };
   const onSubmit = async (data: PlayerDeleteFormProps) => {
     await deletePlayer({
       id: data.id,
@@ -45,15 +44,16 @@ const DeletePlayer = ({ onClose, playerId }: DeletePlayerProps) => {
 
   return (
     <ConfirmationModal
+      ref={modal}
       title={t('title')}
       onOk={handleOk}
-      onCancel={handleCancel}
+      onClose={onClose}
       isLoading={isLoading}
       footer={[
         <Button key="submit" type="primary" onClick={handleOk}>
           {t('buttons.delete')}
         </Button>,
-        <Button key="back" onClick={handleCancel}>
+        <Button key="back" onClick={modal.current?.close}>
           {t('buttons.cancel')}
         </Button>,
       ]}

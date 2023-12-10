@@ -2,7 +2,7 @@ import { Button, Space, Table, theme } from 'antd';
 import { Battle, useGetBattlesQuery } from '../../services/battle';
 import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import StartBattle from './components/StartBattle';
 import EndBattle from './components/EndBattle';
 
@@ -13,10 +13,6 @@ const BattleList = () => {
 
   const { data: battles, isLoading } = useGetBattlesQuery({});
   const { t } = useTranslation('translation', { keyPrefix: 'pages.battle' });
-
-  useEffect(() => {
-    setSelectedRow(undefined);
-  }, [battles]);
 
   const columns = [
     {
@@ -86,6 +82,7 @@ const BattleList = () => {
           battleId={selectedRow.id}
           onClose={() => {
             setOpenedModal('');
+            setSelectedRow(undefined);
           }}
         />
       )}

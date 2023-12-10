@@ -1,12 +1,12 @@
 import { Button, Space, App } from 'antd';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import AppController from '../../../components/AppController';
 import { useCreatePlayerMutation } from '../../../services/player';
 import { UserOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
-import RightModal from '../../../components/RightModal';
+import RightModal, { RightModalRef } from '../../../components/RightModal';
 
 export interface CreatePlayerProps {
   onClose: () => void;
@@ -17,6 +17,7 @@ interface CreatePlayerFormProps {
 }
 
 const CreatePlayer = ({ onClose }: CreatePlayerProps) => {
+  const modal = useRef<RightModalRef>();
   const { message } = App.useApp();
   const { t } = useTranslation('translation', {
     keyPrefix: 'pages.player.create',
@@ -27,14 +28,14 @@ const CreatePlayer = ({ onClose }: CreatePlayerProps) => {
 
   useEffect(() => {
     reset({
-      name: '',
+      name: undefined,
     });
   }, []);
 
   useEffect(() => {
     if (isSuccess) {
       message.success(t('messages.success'));
-      onClose();
+      modal.current?.close();
     }
   }, [isSuccess]);
 
@@ -46,12 +47,15 @@ const CreatePlayer = ({ onClose }: CreatePlayerProps) => {
 
   return (
     <RightModal
+      ref={modal}
       title={t('title')}
       onClose={onClose}
       isLoading={isLoading}
       extra={
         <Space>
-          <Button onClick={onClose}>{commonT('buttons.cancel')}</Button>
+          <Button onClick={modal.current?.close}>
+            {commonT('buttons.cancel')}
+          </Button>
           <Button type="primary" onClick={handleSubmit(onSubmit)}>
             {commonT('buttons.create')}
           </Button>

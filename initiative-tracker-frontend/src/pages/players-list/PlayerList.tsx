@@ -75,7 +75,8 @@ const PlayerList = () => {
         <DeletePlayer
           playerId={selectedRow.id}
           onClose={() => {
-            setOpenedModal('undefined');
+            setOpenedModal('');
+            setSelectedRow(undefined);
           }}
         />
       )}

@@ -1,8 +1,10 @@
 import { Button, App } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDeleteBattleMutation } from '../../../services/battle';
-import { useEffect } from 'react';
-import ConfirmationModal from '../../../components/ConfirmationModal';
+import { useEffect, useRef } from 'react';
+import ConfirmationModal, {
+  ConfirmationModalRef,
+} from '../../../components/ConfirmationModal';
 
 export interface EndBattleProps {
   onClose: () => void;
@@ -10,6 +12,7 @@ export interface EndBattleProps {
 }
 
 const EndBattle = ({ onClose, battleId }: EndBattleProps) => {
+  const modal = useRef<ConfirmationModalRef>();
   const { message } = App.useApp();
   const { t } = useTranslation('translation', {
     keyPrefix: 'pages.battle.end',
@@ -19,7 +22,7 @@ const EndBattle = ({ onClose, battleId }: EndBattleProps) => {
   useEffect(() => {
     if (isSuccess) {
       message.success(t('messages.success'));
-      onClose();
+      modal.current?.close();
     }
   }, [isSuccess]);
 
@@ -27,24 +30,20 @@ const EndBattle = ({ onClose, battleId }: EndBattleProps) => {
     await deleteBattle({
       battleId: battleId,
     });
-    onClose();
-  };
-
-  const handleCancel = async () => {
-    onClose();
   };
 
   return (
     <ConfirmationModal
+      ref={modal}
       title={t('title')}
       onOk={handleOk}
-      onCancel={handleCancel}
+      onClose={onClose}
       isLoading={isLoading}
       footer={[
         <Button key="submit" type="primary" onClick={handleOk}>
           {t('buttons.delete')}
         </Button>,
-        <Button key="back" onClick={handleCancel}>
+        <Button key="back" onClick={modal.current?.close}>
           {t('buttons.cancel')}
         </Button>,
       ]}
