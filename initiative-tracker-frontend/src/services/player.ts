@@ -10,18 +10,50 @@ export const playerApi = api.injectEndpoints({
       }),
       providesTags: ['getPlayers'],
     }),
+    deletePlayer: builder.mutation<DeletePlayerResponse, DeletePlayerRequest>({
+      query: request => ({
+        url: 'player/' + request.id,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getPlayers'],
+    }),
+    createPlayer: builder.mutation<CreatePlayerResponse, CreatePlayerRequest>({
+      query: request => ({
+        url: 'player',
+        method: 'POST',
+        body: request,
+      }),
+      invalidatesTags: ['getPlayers'],
+    }),
   }),
 });
 
 export interface GetPlayersRequest {}
+
 export interface GetPlayersResponse {
   total: number;
   items: Player[];
 }
+
+export interface CreatePlayerRequest {
+  name: string;
+}
+
+export type CreatePlayerResponse = Player;
+
+export interface DeletePlayerRequest {
+  id: number;
+}
+
+export interface DeletePlayerResponse {}
 
 export interface Player {
   id: number;
   name: string;
 }
 
-export const { useGetPlayersQuery } = playerApi;
+export const {
+  useGetPlayersQuery,
+  useDeletePlayerMutation,
+  useCreatePlayerMutation,
+} = playerApi;

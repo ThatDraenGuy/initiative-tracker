@@ -42,6 +42,40 @@
                 }
             }
         },
+        "player": {
+            "label": "Игроки",
+            "buttons": {
+                "createPlayer": "Создать игрока",
+                "deletePlayer": "Удалить игрока"
+            },
+            "columns": {
+                "name": "Имя"
+            },
+            "create": {
+                "title": "Создать нового игрока",
+                "controls": {
+                    "name": "Имя игрока"
+                },
+                "messages": {
+                    "success": "Игрок успешно создан"
+                },
+                "name": {
+                    "placeholder": "Введите имя игрока..."
+                }
+            },
+            "delete": {
+                "title": "Удалить игрока",
+                "warning": "Вы действительно хотите удалить игрока?",
+                "buttons": {
+                    "delete": "Удалить",
+                    "cancel": "Отменить"
+                },
+                "messages": {
+                    "success": "Игрок успешно удален"
+                }
+            }
+        },
+
         "character": {
             "label": "Персонажи",
             "columns": {

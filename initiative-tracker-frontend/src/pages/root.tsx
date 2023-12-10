@@ -29,6 +29,11 @@ const Root = () => {
       key: 'characters',
       path: '/characters',
     },
+    {
+      label: t('player.label'),
+      key: 'players',
+      path: '/players',
+    },
   ];
 
   const [current, setCurrent] = useState(
