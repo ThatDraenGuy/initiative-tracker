@@ -4,7 +4,7 @@ import { useCreateCharacterMutation } from '../../../services/character';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { useGetPlayersQuery } from '../../../services/player';
-import { useGetStatBlocksQuery } from '../../../services/statBlock';
+import { useGetStatBlocksBriefQuery } from '../../../services/statBlock';
 import AppController from '../../../components/AppController';
 
 export interface CreateCharacterProps {
@@ -29,7 +29,7 @@ const CreateCharacter = ({ open, onClose }: CreateCharacterProps) => {
     useCreateCharacterMutation();
   const { data: players, isLoading: isPlayersLoading } = useGetPlayersQuery({});
   const { data: statBlocks, isLoading: isStatBlocksLoading } =
-    useGetStatBlocksQuery({});
+    useGetStatBlocksBriefQuery({});
 
   useEffect(() => {
     reset({

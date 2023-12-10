@@ -2,9 +2,12 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { App as AntdApp } from 'antd';
+import type { MessageInstance } from 'antd/es/message/interface';
+import type { ModalStaticFunctions } from 'antd/es/modal/confirm';
+import type { NotificationInstance } from 'antd/es/notification/interface';
 import Root from './pages/root';
 import BattleList from './pages/battle-list/BattleList';
-import { ConfigProvider, theme, App as AntdApp } from 'antd';
 import CharacterList from './pages/character-list/CharacterList';
 
 const router = createBrowserRouter([
@@ -24,16 +27,22 @@ const router = createBrowserRouter([
   },
 ]);
 
+let message: MessageInstance;
+let notification: NotificationInstance;
+let modal: Omit<ModalStaticFunctions, 'warn'>;
+
 function App() {
+  const staticFunction = AntdApp.useApp();
+  message = staticFunction.message;
+  modal = staticFunction.modal;
+  notification = staticFunction.notification;
+
   return (
-    <AntdApp style={{ height: '100%' }}>
-      <Provider store={store}>
-        <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-          <RouterProvider router={router} />
-        </ConfigProvider>
-      </Provider>
-    </AntdApp>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   );
 }
 
+export { message, modal, notification };
 export default App;

@@ -1,6 +1,6 @@
 import { api } from './api';
 import { Player } from './player';
-import { StatBlock } from './statBlock';
+import { StatBlockBrief } from './statBlock';
 
 export const characterApi = api.injectEndpoints({
   endpoints: builder => ({
@@ -42,7 +42,7 @@ export type CreateCharacterResponse = Character;
 export interface Character {
   id: number;
   player?: Player;
-  statBlock: StatBlock;
+  statBlock: StatBlockBrief;
 }
 
 export const { useGetCharactersQuery, useCreateCharacterMutation } =

@@ -2,9 +2,12 @@ import { api } from './api';
 
 export const statBlockApi = api.injectEndpoints({
   endpoints: builder => ({
-    getStatBlocks: builder.query<GetStatBlocksResponse, GetStatBlocksRequest>({
+    getStatBlocksBrief: builder.query<
+      GetStatBlocksBriefResponse,
+      GetStatBlocksBriefRequest
+    >({
       query: request => ({
-        url: 'statBlock',
+        url: 'statBlockBrief',
         method: 'GET',
         params: request,
       }),
@@ -12,13 +15,13 @@ export const statBlockApi = api.injectEndpoints({
   }),
 });
 
-export interface GetStatBlocksRequest {}
-export interface GetStatBlocksResponse {
+export interface GetStatBlocksBriefRequest {}
+export interface GetStatBlocksBriefResponse {
   total: number;
-  items: StatBlock[];
+  items: StatBlockBrief[];
 }
 
-export interface StatBlock {
+export interface StatBlockBrief {
   id: number;
   entityName: string;
   hitPoints: number;
@@ -34,4 +37,4 @@ export interface CreatureType {
   name: string;
 }
 
-export const { useGetStatBlocksQuery } = statBlockApi;
+export const { useGetStatBlocksBriefQuery } = statBlockApi;
