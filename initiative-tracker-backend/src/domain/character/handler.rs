@@ -1,6 +1,6 @@
 use actix_web::{
-    get, post,
-    web::{self, Data, Json},
+    delete, get, post,
+    web::{self, Data, Json, Path},
 };
 use initiative_tracker_backend::{derive_request, derive_response};
 
@@ -15,7 +15,12 @@ use crate::{
 };
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("/character").service(find).service(create));
+    cfg.service(
+        web::scope("/character")
+            .service(find)
+            .service(create)
+            .service(delete),
+    );
 }
 
 #[derive_request]
@@ -52,4 +57,9 @@ async fn create(
     db_pool: Data<DbPool>,
 ) -> AppResult<Json<CharacterResponse>> {
     Ok(Json(actions::create(&db_pool, &request).await?.into()))
+}
+
+#[delete("/{id}")]
+async fn delete(id: Path<i64>, db_pool: Data<DbPool>) -> AppResult<Json<()>> {
+    Ok(Json(actions::delete(&db_pool, &id).await?))
 }

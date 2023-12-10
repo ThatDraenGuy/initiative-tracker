@@ -31,6 +31,7 @@ export const characterApi = api.injectEndpoints({
         url: `character/${request.id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['getCharacters'],
     }),
   }),
 });

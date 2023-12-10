@@ -48,3 +48,16 @@ pub async fn create(conn: &DbPool, request: &CreateCharacterRequest) -> AppResul
     .fetch_one(conn)
     .await?)
 }
+
+pub async fn delete(conn: &DbPool, id: &i64) -> AppResult<()> {
+    sqlx::query!(
+        r#"
+        DELETE FROM character
+        WHERE character_id = $1
+        "#,
+        id
+    )
+    .execute(conn)
+    .await?;
+    Ok(())
+}
