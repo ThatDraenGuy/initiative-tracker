@@ -2,14 +2,14 @@ import { Button, Space, Table, theme } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { useGetPlayersQuery } from '../../services/player';
+import { Player, useGetPlayersQuery } from '../../services/player';
 import CreatePlayer from './components/CreatePlayer';
 import DeletePlayer from './components/DeletePlayer';
 
 const PlayerList = () => {
   const { token } = theme.useToken();
   const [openedModal, setOpenedModal] = useState('');
-  const [selectedRow, setSelectedRow] = useState<number | undefined>(undefined);
+  const [selectedRow, setSelectedRow] = useState<Player | undefined>(undefined);
 
   const { data: players, isLoading } = useGetPlayersQuery({});
   const { t } = useTranslation('translation', { keyPrefix: 'pages.player' });
@@ -24,8 +24,6 @@ const PlayerList = () => {
 
   const dataSource =
     players?.items.map(player => ({
-      name: player.name,
-      id: player.id,
       ...player,
     })) ?? [];
 
@@ -45,25 +43,24 @@ const PlayerList = () => {
           </Button>
           <Button
             icon={<DeleteOutlined />}
-            onClick={() => {
-              if (selectedRow != undefined) {
-                setOpenedModal('delete_player');
-              }
-            }}
+            onClick={() => setOpenedModal('delete_player')}
             disabled={selectedRow === undefined}
           >
             {t('buttons.deletePlayer')}
           </Button>
         </Space>
         <Table
-          onRow={(record: { id: number }) => ({
+          onRow={(record: Player) => ({
             onClick: () =>
-              setSelectedRow(selectedRow === record.id ? undefined : record.id),
+              setSelectedRow(
+                selectedRow?.id === record.id ? undefined : record,
+              ),
           })}
           rowSelection={{
             type: 'radio',
-            selectedRowKeys: [selectedRow],
+            selectedRowKeys: [selectedRow?.id],
             columnWidth: 0,
+            renderCell: () => {},
           }}
           columns={columns}
           dataSource={dataSource}
@@ -71,18 +68,17 @@ const PlayerList = () => {
           loading={isLoading}
         />
       </Space>
-      <CreatePlayer
-        open={openedModal === 'create_player'}
-        onClose={() => setOpenedModal('')}
-      />
-      <DeletePlayer
-        open={openedModal === 'delete_player' && selectedRow !== undefined}
-        playerId={selectedRow === undefined ? 0 : selectedRow}
-        onClose={() => {
-          setOpenedModal('undefined');
-          setSelectedRow(undefined);
-        }}
-      />
+      {openedModal === 'create_player' && (
+        <CreatePlayer onClose={() => setOpenedModal('')} />
+      )}
+      {openedModal === 'delete_player' && selectedRow?.id && (
+        <DeletePlayer
+          playerId={selectedRow.id}
+          onClose={() => {
+            setOpenedModal('undefined');
+          }}
+        />
+      )}
     </>
   );
 };

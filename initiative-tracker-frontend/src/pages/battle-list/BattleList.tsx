@@ -70,6 +70,7 @@ const BattleList = () => {
             type: 'radio',
             selectedRowKeys: [selectedRow?.id],
             columnWidth: 0,
+            renderCell: () => {},
           }}
           columns={columns}
           dataSource={dataSource}
