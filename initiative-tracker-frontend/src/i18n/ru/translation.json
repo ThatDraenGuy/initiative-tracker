@@ -42,7 +42,7 @@
                 }
             }
         },
-        "players": {
+        "player": {
             "label": "Игроки",
             "buttons": {
                 "createPlayer": "Создать игрока",
@@ -58,6 +58,9 @@
                 },
                 "messages": {
                     "success": "Игрок успешно создан"
+                },
+                "name": {
+                    "placeholder": "Введите имя игрока..."
                 }
             },
             "delete": {

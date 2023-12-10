@@ -1,5 +1,4 @@
 import { api } from './api';
-import {DeleteBattleRequest, DeleteBattleResponse, StartBattleRequest, StartBattleResponse} from "./battle";
 
 export const playerApi = api.injectEndpoints({
   endpoints: builder => ({
@@ -11,42 +10,39 @@ export const playerApi = api.injectEndpoints({
       }),
       providesTags: ['getPlayers'],
     }),
-    deletePlayer: builder.mutation<
-        DeletePlayerResponse,
-        DeletePlayerRequest
-    >({
+    deletePlayer: builder.mutation<DeletePlayerResponse, DeletePlayerRequest>({
       query: request => ({
-        url: 'player/' + request.id + '/end',
+        url: 'player/' + request.id,
         method: 'DELETE',
       }),
-      invalidatesTags: ['getBattles'],
+      invalidatesTags: ['getPlayers'],
     }),
-    startBattle: builder.mutation<StartBattleResponse, StartBattleRequest>({
+    createPlayer: builder.mutation<CreatePlayerResponse, CreatePlayerRequest>({
       query: request => ({
-        url: 'battle/start',
+        url: 'player',
         method: 'POST',
         body: request,
       }),
-      invalidatesTags: ['getBattles'],
+      invalidatesTags: ['getPlayers'],
     }),
-
   }),
 });
 
 export interface GetPlayersRequest {}
+
 export interface GetPlayersResponse {
   total: number;
   items: Player[];
 }
 
 export interface CreatePlayerRequest {
-  name: string
+  name: string;
 }
 
-export type CreatePlayerResponse = Player
+export type CreatePlayerResponse = Player;
 
 export interface DeletePlayerRequest {
-  id: number
+  id: number;
 }
 
 export interface DeletePlayerResponse {}
@@ -56,4 +52,8 @@ export interface Player {
   name: string;
 }
 
-export const { useGetPlayersQuery } = playerApi;
+export const {
+  useGetPlayersQuery,
+  useDeletePlayerMutation,
+  useCreatePlayerMutation,
+} = playerApi;

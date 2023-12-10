@@ -9,6 +9,7 @@ import type { NotificationInstance } from 'antd/es/notification/interface';
 import Root from './pages/root';
 import BattleList from './pages/battle-list/BattleList';
 import CharacterList from './pages/character-list/CharacterList';
+import PlayerList from './pages/players-list/PlayerList';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: 'characters',
         element: <CharacterList />,
+      },
+      {
+        path: 'players',
+        element: <PlayerList />,
       },
     ],
   },

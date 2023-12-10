@@ -37,12 +37,6 @@ const BattleList = () => {
       ...battle,
     })) ?? [];
 
-  // const rowSelection = {
-  //   onChange: (selectedRowKeys: React.Key[]) => {
-  //     setSelectedRow(selectedRowKeys[0] as number);
-  //   },
-  // };
-
   return (
     <>
       <Space direction="vertical" size="small" style={{ display: 'flex' }}>
@@ -76,7 +70,6 @@ const BattleList = () => {
             type: 'radio',
             selectedRowKeys: [selectedRow?.id],
             columnWidth: 0,
-            renderCell: () => {},
           }}
           columns={columns}
           dataSource={dataSource}
