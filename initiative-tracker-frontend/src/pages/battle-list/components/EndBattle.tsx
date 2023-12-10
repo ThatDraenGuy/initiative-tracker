@@ -1,16 +1,16 @@
-import { Button, Spin, message, Modal } from 'antd';
+import { Button, App } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDeleteBattleMutation } from '../../../services/battle';
 import { useEffect } from 'react';
+import ConfirmationModal from '../../../components/ConfirmationModal';
 
 export interface EndBattleProps {
-  open: boolean;
   onClose: () => void;
   battleId: number;
 }
 
-const EndBattle = ({ onClose, open, battleId }: EndBattleProps) => {
-  const [messageApi, contextHolder] = message.useMessage();
+const EndBattle = ({ onClose, battleId }: EndBattleProps) => {
+  const { message } = App.useApp();
   const { t } = useTranslation('translation', {
     keyPrefix: 'pages.battle.end',
   });
@@ -18,7 +18,7 @@ const EndBattle = ({ onClose, open, battleId }: EndBattleProps) => {
 
   useEffect(() => {
     if (isSuccess) {
-      messageApi.success(t('messages.success'));
+      message.success(t('messages.success'));
       onClose();
     }
   }, [isSuccess]);
@@ -35,27 +35,22 @@ const EndBattle = ({ onClose, open, battleId }: EndBattleProps) => {
   };
 
   return (
-    <>
-      {contextHolder}
-      <Spin spinning={isLoading}>
-        <Modal
-          title={t('title')}
-          open={open}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          footer={[
-            <Button key="submit" type="primary" onClick={handleOk}>
-              {t('buttons.delete')}
-            </Button>,
-            <Button key="back" onClick={handleCancel}>
-              {t('buttons.cancel')}
-            </Button>,
-          ]}
-        >
-          <p>{t('warning')}</p>
-        </Modal>
-      </Spin>
-    </>
+    <ConfirmationModal
+      title={t('title')}
+      onOk={handleOk}
+      onCancel={handleCancel}
+      isLoading={isLoading}
+      footer={[
+        <Button key="submit" type="primary" onClick={handleOk}>
+          {t('buttons.delete')}
+        </Button>,
+        <Button key="back" onClick={handleCancel}>
+          {t('buttons.cancel')}
+        </Button>,
+      ]}
+    >
+      <p>{t('warning')}</p>
+    </ConfirmationModal>
   );
 };
 

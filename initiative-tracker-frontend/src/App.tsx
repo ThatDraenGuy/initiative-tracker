@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import Root from './pages/root';
 import BattleList from './pages/battle-list/BattleList';
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider, theme, App as AntdApp } from 'antd';
 import CharacterList from './pages/character-list/CharacterList';
 
 const router = createBrowserRouter([
@@ -26,11 +26,13 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <Provider store={store}>
-      <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-        <RouterProvider router={router} />
-      </ConfigProvider>
-    </Provider>
+    <AntdApp style={{ height: '100%' }}>
+      <Provider store={store}>
+        <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+          <RouterProvider router={router} />
+        </ConfigProvider>
+      </Provider>
+    </AntdApp>
   );
 }
 

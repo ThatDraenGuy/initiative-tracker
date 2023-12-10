@@ -1,18 +1,22 @@
 import { Button, Space, Table, theme } from 'antd';
-import { useGetBattlesQuery } from '../../services/battle';
+import { Battle, useGetBattlesQuery } from '../../services/battle';
 import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import StartBattle from './components/StartBattle';
 import EndBattle from './components/EndBattle';
 
 const BattleList = () => {
   const { token } = theme.useToken();
   const [openedModal, setOpenedModal] = useState('');
-  const [selectedRow, setSelectedRow] = useState<number | undefined>(undefined);
+  const [selectedRow, setSelectedRow] = useState<Battle | undefined>(undefined);
 
   const { data: battles, isLoading } = useGetBattlesQuery({});
   const { t } = useTranslation('translation', { keyPrefix: 'pages.battle' });
+
+  useEffect(() => {
+    setSelectedRow(undefined);
+  }, [battles]);
 
   const columns = [
     {
@@ -62,13 +66,15 @@ const BattleList = () => {
           </Button>
         </Space>
         <Table
-          onRow={(record: { id: number }) => ({
+          onRow={(record: Battle) => ({
             onClick: () =>
-              setSelectedRow(selectedRow === record.id ? undefined : record.id),
+              setSelectedRow(
+                selectedRow?.id === record.id ? undefined : record,
+              ),
           })}
           rowSelection={{
             type: 'radio',
-            selectedRowKeys: [selectedRow],
+            selectedRowKeys: [selectedRow?.id],
             columnWidth: 0,
             renderCell: () => {},
           }}
@@ -78,18 +84,17 @@ const BattleList = () => {
           loading={isLoading}
         />
       </Space>
-      <StartBattle
-        open={openedModal === 'start_battle'}
-        onClose={() => setOpenedModal('')}
-      />
-      <EndBattle
-        open={openedModal === 'end_battle' && selectedRow !== undefined}
-        battleId={selectedRow === undefined ? 0 : selectedRow}
-        onClose={() => {
-          setOpenedModal('undefined');
-          setSelectedRow(undefined);
-        }}
-      />
+      {openedModal === 'start_battle' && (
+        <StartBattle onClose={() => setOpenedModal('')} />
+      )}
+      {openedModal === 'end_battle' && selectedRow?.id && (
+        <EndBattle
+          battleId={selectedRow.id}
+          onClose={() => {
+            setOpenedModal('');
+          }}
+        />
+      )}
     </>
   );
 };
