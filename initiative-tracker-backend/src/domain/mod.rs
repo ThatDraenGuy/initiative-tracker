@@ -1,9 +1,16 @@
 pub mod ability;
+pub mod ability_score;
 pub mod battle;
 pub mod character;
 pub mod creature_type;
+pub mod damage_type;
+pub mod damage_type_modifier;
 pub mod player;
+pub mod skill;
+pub mod stat_block;
 pub mod stat_block_brief;
+
+use std::vec;
 
 use actix_web::{web, HttpResponse, Responder};
 use itertools::Itertools;
@@ -16,6 +23,7 @@ pub fn configure_domain(cfg: &mut web::ServiceConfig) {
     character::handler::configure(cfg);
     player::handler::configure(cfg);
     stat_block_brief::handler::configure(cfg);
+    stat_block::handler::configure(cfg);
 }
 
 #[derive(Serialize)]
@@ -37,6 +45,15 @@ impl<T: Serialize> PageResponse<T> {
         }
     }
 }
+impl<T: Serialize> IntoIterator for PageResponse<T> {
+    type Item = T;
+
+    type IntoIter = vec::IntoIter<T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.items.into_iter()
+    }
+}
 impl<T: Serialize> Responder for PageResponse<T> {
     type Body = actix_web::body::BoxBody;
 
@@ -45,7 +62,7 @@ impl<T: Serialize> Responder for PageResponse<T> {
     }
 }
 pub struct Count {
-    count: i64,
+    pub count: i64,
 }
 
 pub trait HasId {

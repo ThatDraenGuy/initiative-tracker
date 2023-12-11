@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
+use initiative_tracker_backend::derive_entity;
 pub mod actions;
 pub mod handler;
 
-#[derive(Serialize, Deserialize)]
+#[derive_entity]
 pub struct Battle {
     pub battle_id: i64,
     pub round_number: i32,

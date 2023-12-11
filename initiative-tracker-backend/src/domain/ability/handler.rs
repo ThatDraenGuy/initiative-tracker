@@ -24,7 +24,7 @@ pub struct FindAbilityRequest {
 }
 
 #[derive_response]
-struct AbililtyResponse {
+pub struct AbililtyResponse {
     pub id: i64,
     pub name: String,
 }

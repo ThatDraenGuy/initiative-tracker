@@ -33,3 +33,16 @@ pub fn derive_response(
     };
     output.into()
 }
+
+#[proc_macro_attribute]
+pub fn derive_entity(
+    _metadata: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    let input: TokenStream = input.into();
+    let output = quote! {
+        #[derive(serde::Serialize, serde::Deserialize, sqlx::FromRow)]
+        #input
+    };
+    output.into()
+}

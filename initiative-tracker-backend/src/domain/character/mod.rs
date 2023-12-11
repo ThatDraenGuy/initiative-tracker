@@ -1,12 +1,11 @@
-use serde::{Deserialize, Serialize};
-use sqlx::FromRow;
+use initiative_tracker_backend::derive_entity;
 
 use super::{player::Player, stat_block_brief::StatBlockBrief, Nullable};
 
 pub mod actions;
 pub mod handler;
 
-#[derive(Serialize, Deserialize, FromRow)]
+#[derive_entity]
 pub struct Character {
     pub character_id: i64,
     #[sqlx(flatten)]
