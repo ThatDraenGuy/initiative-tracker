@@ -4,6 +4,7 @@ import { useGetSkillsQuery } from '../../../services/skill';
 import RightModal, { RightModalRef } from '../../../components/RightModal';
 import { useRef } from 'react';
 import { Button, Space, Table } from 'antd';
+import { getBonusFromScore, getProficiencyBonus } from '../../../utils';
 
 export interface ShowStatBlockProps {
   rowData: StatBlock;
@@ -42,7 +43,7 @@ const ShowStatBlock = ({ rowData, onClose }: ShowStatBlockProps) => {
     ...score,
     abilityName: score.ability.name,
     abilityValue: score.score,
-    abilityBonus: (score.score - 10) / 2,
+    abilityBonus: getBonusFromScore(score.score),
     key: score.ability.id,
   }));
 
@@ -62,21 +63,15 @@ const ShowStatBlock = ({ rowData, onClose }: ShowStatBlockProps) => {
   const skillDataSource = skills?.items.map(skill => ({
     ...skill,
     skillName: `${skill.name} (${skill.ability.name})`,
-    skillValue: rowData.proficientSkills.find(
-      proficient => proficient.id === skill.id,
-    )
-      ? ((rowData.abilityScores.find(
+    skillValue:
+      getBonusFromScore(
+        rowData.abilityScores.find(
           score => score.ability.id === skill.ability.id,
-        )?.score ?? 10) -
-          10) /
-          2 +
-        Math.floor((rowData.level - 1) / 4) +
-        2
-      : ((rowData.abilityScores.find(
-          score => score.ability.id === skill.ability.id,
-        )?.score ?? 10) -
-          10) /
-        2,
+        )?.score ?? 10,
+      ) +
+      (rowData.proficientSkills.find(proficient => proficient.id === skill.id)
+        ? getProficiencyBonus(rowData.level)
+        : 0),
   }));
   return (
     <RightModal
@@ -96,7 +91,7 @@ const ShowStatBlock = ({ rowData, onClose }: ShowStatBlockProps) => {
         <Table
           columns={abilityColumns}
           dataSource={abilityDataSource}
-          rowKey={'id'}
+          rowKey={'key'}
           pagination={false}
         />
         <Table

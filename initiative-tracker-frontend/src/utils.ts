@@ -9,3 +9,7 @@ export function editArrElem<T>(arr: T[], index: number, value: T): T[] {
 export function getBonusFromScore(score: number): number {
   return Math.floor((score - 10) / 2);
 }
+
+export function getProficiencyBonus(level: number): number {
+  return Math.floor((level - 1) / 4) + 2;
+}

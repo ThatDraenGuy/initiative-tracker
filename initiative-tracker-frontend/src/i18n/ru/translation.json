@@ -158,6 +158,7 @@
         }
       },
       "showStatBlock": {
+        "title": "Характеристики",
         "ability": {
           "columns": {
             "name": "Характеристика",
