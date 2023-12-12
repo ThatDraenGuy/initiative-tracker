@@ -59,10 +59,10 @@ export interface CreateStatBlockRequest {
   armorClass: number;
   speed: number;
   level: number;
-  creatureType: { id: number };
-  abilityScores: { ability: { id: number }; score: number }[];
-  proficientSkills: { skill: { id: number } }[];
-  damageTypeModifiers: { damageType: { id: number }; modifier: number }[];
+  creatureTypeId: number;
+  abilityScores: { abilityId: number; score: number }[];
+  proficientSkills: { skillId: number }[];
+  damageTypeModifiers: { damageTypeId: number; modifier: number }[];
 }
 export type CreateStatBlockResponse = StatBlock;
 

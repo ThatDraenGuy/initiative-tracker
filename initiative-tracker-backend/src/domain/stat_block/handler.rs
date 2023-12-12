@@ -1,9 +1,10 @@
 use actix_web::{
-    get,
-    web::{self, Data},
+    get, post,
+    web::{self, Data, Json},
 };
 use initiative_tracker_backend::{derive_request, derive_response};
 use itertools::Itertools;
+use validator::Validate;
 
 use crate::{
     domain::{
@@ -12,17 +13,52 @@ use crate::{
         PageResponse,
     },
     errors::AppResult,
-    DbPool, ValidQuery,
+    DbPool, ValidJson, ValidQuery,
 };
 
 use super::{actions, StatBlock};
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("/statBlock").service(find));
+    cfg.service(web::scope("/statBlock").service(find).service(create));
 }
 
 #[derive_request]
 pub struct FindStatBlockRequest {}
+
+#[derive_request]
+pub struct CreateStatBlockRequest {
+    pub entity_name: String,
+    pub hit_points: i32,
+    pub hit_dice_type: Option<i32>,
+    pub hit_dice_count: Option<i32>,
+    pub armor_class: i32,
+    pub speed: i32,
+    pub level: i32,
+    pub creature_type_id: i64,
+    #[validate]
+    pub ability_scores: Vec<CreateAbilityScoreRequest>,
+    #[validate]
+    pub proficient_skills: Vec<CreateProficientSkillRequest>,
+    #[validate]
+    pub damage_type_modifiers: Vec<CreateDamageTypeModifierRequest>,
+}
+
+#[derive_request]
+pub struct CreateAbilityScoreRequest {
+    pub ability_id: i64,
+    pub score: i32,
+}
+
+#[derive_request]
+pub struct CreateProficientSkillRequest {
+    pub skill_id: i64,
+}
+
+#[derive_request]
+pub struct CreateDamageTypeModifierRequest {
+    pub damage_type_id: i64,
+    pub modifier: f32,
+}
 
 #[derive_response]
 pub struct StatBlockResponse {
@@ -71,4 +107,12 @@ async fn find(
     db_pool: Data<DbPool>,
 ) -> AppResult<PageResponse<StatBlockResponse>> {
     Ok(actions::find(&db_pool, &condition).await?.map_into())
+}
+
+#[post("")]
+async fn create(
+    request: ValidJson<CreateStatBlockRequest>,
+    db_pool: Data<DbPool>,
+) -> AppResult<Json<StatBlockResponse>> {
+    Ok(Json(actions::create(&db_pool, &request).await?.into()))
 }

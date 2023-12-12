@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS ability_scores (
   ability_id int8 NOT NULL, 
   score int4 NOT NULL, 
   CONSTRAINT ability_scores_pk PRIMARY KEY (stat_block_id, ability_id), 
-  CONSTRAINT ability_scores_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id), 
+  CONSTRAINT ability_scores_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id) ON DELETE CASCADE, 
   CONSTRAINT ability_scores_fk1 FOREIGN KEY (ability_id) REFERENCES ability(ability_id),
   CONSTRAINT score_check CHECK (
     (
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS proficient_skills (
   stat_block_id int8 NOT NULL, 
   skill_id int8 NOT NULL, 
   CONSTRAINT proficient_skills_pk PRIMARY KEY (stat_block_id, skill_id), 
-  CONSTRAINT proficient_skills_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id), 
+  CONSTRAINT proficient_skills_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id) ON DELETE CASCADE, 
   CONSTRAINT proficient_skills_fk1 FOREIGN KEY (skill_id) REFERENCES skill(skill_id)
 );
 CREATE TABLE IF NOT EXISTS damage_type_modifiers (
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS damage_type_modifiers (
   damage_type_id int8 NOT NULL, 
   modifier float4 NOT NULL, 
   CONSTRAINT damage_type_modifiers_pk PRIMARY KEY (stat_block_id, damage_type_id), 
-  CONSTRAINT damage_type_modifiers_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id), 
+  CONSTRAINT damage_type_modifiers_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id) ON DELETE CASCADE, 
   CONSTRAINT damage_type_modifiers_fk1 FOREIGN KEY (damage_type_id) REFERENCES damage_type(damage_type_id),
   CONSTRAINT modifier_check CHECK (
     (
@@ -280,21 +280,6 @@ CREATE TRIGGER check_current_stats_hp
 BEFORE UPDATE ON current_stats
 FOR EACH ROW EXECUTE PROCEDURE trigger_check_current_stats_hp();
 --------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION trigger_create_ability_scores()
-RETURNS TRIGGER AS $$
-DECLARE
-BEGIN
-  INSERT INTO ability_scores (ability_id, stat_block_id, score)
-  SELECT ability_id, NEW.stat_block_id, 10 FROM ability;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-DROP TRIGGER IF EXISTS create_ability_scores ON stat_block;
-CREATE TRIGGER create_ability_scores
-AFTER INSERT ON stat_block
-FOR EACH ROW EXECUTE PROCEDURE trigger_create_ability_scores();
---------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION trigger_check_ability_scores()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -306,7 +291,7 @@ BEGIN
   INTO ability_count;
 
   SELECT ARRAY(
-    SELECT sb.id FROM stat_block sb
+    SELECT sb.stat_block_id FROM stat_block sb
   ) INTO stat_blocks;
 
   FOREACH sb_id IN ARRAY stat_blocks
@@ -314,11 +299,12 @@ BEGIN
     IF ability_count != (
       SELECT COUNT(*) FROM ability_scores abs
       WHERE abs.stat_block_id = sb_id
-    )
+    ) AND ability_count != 0
     THEN
       RAISE EXCEPTION 'Для статблока должны существовать все значения всех характеристик!';
     END IF;
   END LOOP;
+  RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 

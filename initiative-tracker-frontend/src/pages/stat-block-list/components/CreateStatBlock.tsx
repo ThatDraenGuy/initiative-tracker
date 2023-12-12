@@ -59,7 +59,7 @@ const CreateStatBlock = ({ onClose }: CreateStatBlockProps) => {
     useForm<CreateStatBlockFormProps>();
   const abilityScores = watch('abilityScores');
   const damageTypeModifiers = watch('damageTypeModifiers');
-  console.log(abilityScores);
+  // console.log(abilityScores);
   const [createStatBlock, { isLoading, isSuccess }] =
     useCreateStatBlockMutation();
   const { data: creatureTypes, isLoading: isCreatureTypesLoading } =
@@ -223,20 +223,10 @@ const CreateStatBlock = ({ onClose }: CreateStatBlockProps) => {
       armorClass: data.armorClass,
       speed: data.speed,
       level: data.level,
-      creatureType: {
-        id: data.creatureTypeId,
-      },
-      abilityScores: data.abilityScores.map(score => ({
-        ability: { id: score.abilityId },
-        score: score.score,
-      })),
-      proficientSkills: data.proficientSkillIds.map(id => ({
-        skill: { id: id },
-      })),
-      damageTypeModifiers: data.damageTypeModifiers.map(damageTypeMod => ({
-        damageType: { id: damageTypeMod.damageTypeId },
-        modifier: damageTypeMod.modifier,
-      })),
+      creatureTypeId: data.creatureTypeId,
+      abilityScores: data.abilityScores,
+      proficientSkills: data.proficientSkillIds.map(id => ({ skillId: id })),
+      damageTypeModifiers: data.damageTypeModifiers,
     });
   };
 
@@ -499,7 +489,7 @@ const CreateStatBlock = ({ onClose }: CreateStatBlockProps) => {
               dataSource={damageTypeModifierDataSource}
               loading={isDamageTypesLoading}
               pagination={false}
-              rowKey={'daamageTypeId'}
+              rowKey={'damageTypeId'}
             />
           )}
         />
