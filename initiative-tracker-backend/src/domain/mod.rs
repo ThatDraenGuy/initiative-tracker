@@ -22,6 +22,7 @@ pub fn configure_domain(cfg: &mut web::ServiceConfig) {
     battle::handler::configure(cfg);
     character::handler::configure(cfg);
     creature_type::handler::configure(cfg);
+    damage_type::handler::configure(cfg);
     player::handler::configure(cfg);
     stat_block_brief::handler::configure(cfg);
     stat_block::handler::configure(cfg);

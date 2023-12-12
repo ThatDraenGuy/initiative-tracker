@@ -11,6 +11,7 @@ const creatureTypeApi = api.injectEndpoints({
         method: 'GET',
         params: request,
       }),
+      providesTags: ['getCreatureTypes'],
     }),
   }),
 });

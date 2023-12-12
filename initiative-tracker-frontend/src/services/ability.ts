@@ -8,6 +8,7 @@ const abilityApi = api.injectEndpoints({
         method: 'GET',
         params: request,
       }),
+      providesTags: ['getAbilities'],
     }),
   }),
 });

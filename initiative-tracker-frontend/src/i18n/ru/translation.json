@@ -136,13 +136,21 @@
           "speed": "Скорость",
           "level": "Уровень",
           "creatureTypeId": "Тип существа",
-          "proficientSkillIds": "Умения"
+          "proficientSkillIds": "Умения",
+          "abilityScores": "Значения характеристик",
+          "damageTypeModifiers": "Модификаторы урона"
         },
         "ability": {
           "columns": {
             "name": "Характеристика",
             "value": "Значение",
             "bonus": "Бонус"
+          }
+        },
+        "damageTypeModifier": {
+          "columns": {
+            "name": "Тип урона",
+            "modifier": "Модификатор"
           }
         },
         "placeholders": {
@@ -165,5 +173,11 @@
         }
       }
     }
+  },
+  "damageTypeModifier": {
+    "immunity": "Иммунитет",
+    "resistance": "Сопротивление",
+    "none": "-",
+    "vulnerability": "Уязвимость"
   }
 }

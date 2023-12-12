@@ -34,6 +34,7 @@ export const statBlockApi = api.injectEndpoints({
         method: 'POST',
         body: request,
       }),
+      invalidatesTags: ['getStatBlocks', 'getStatBlocksBrief'],
     }),
   }),
 });

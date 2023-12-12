@@ -28,12 +28,15 @@ export const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithErrorHandling,
   tagTypes: [
+    'getAbilities',
     'getBattles',
     'getCharacters',
     'getPlayers',
     'getStatBlocks',
     'getStatBlocksBrief',
     'getSkills',
+    'getDamageTypes',
+    'getCreatureTypes',
   ],
   endpoints: () => ({}),
 });
