@@ -1,5 +1,6 @@
 use initiative_tracker_backend::derive_entity;
 
+pub mod actions;
 pub mod handler;
 
 #[derive_entity]

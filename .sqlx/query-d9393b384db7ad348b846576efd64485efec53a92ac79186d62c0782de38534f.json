@@ -1,0 +1,26 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT * FROM creature_type;\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "creature_type_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "creature_type_name",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "d9393b384db7ad348b846576efd64485efec53a92ac79186d62c0782de38534f"
+}

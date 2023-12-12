@@ -27,6 +27,13 @@ const baseQueryWithErrorHandling: BaseQueryFn<
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithErrorHandling,
-  tagTypes: ['getBattles', 'getCharacters', 'getPlayers'],
+  tagTypes: [
+    'getBattles',
+    'getCharacters',
+    'getPlayers',
+    'getStatBlocks',
+    'getStatBlocksBrief',
+    'getSkills',
+  ],
   endpoints: () => ({}),
 });

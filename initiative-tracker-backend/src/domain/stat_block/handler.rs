@@ -1,6 +1,6 @@
 use actix_web::{
     get,
-    web::{self, Data, Query},
+    web::{self, Data},
 };
 use initiative_tracker_backend::{derive_request, derive_response};
 use itertools::Itertools;
@@ -12,7 +12,7 @@ use crate::{
         PageResponse,
     },
     errors::AppResult,
-    DbPool,
+    DbPool, ValidQuery,
 };
 
 use super::{actions, StatBlock};
@@ -67,7 +67,7 @@ impl From<StatBlock> for StatBlockResponse {
 
 #[get("")]
 async fn find(
-    condition: Query<FindStatBlockRequest>,
+    condition: ValidQuery<FindStatBlockRequest>,
     db_pool: Data<DbPool>,
 ) -> AppResult<PageResponse<StatBlockResponse>> {
     Ok(actions::find(&db_pool, &condition).await?.map_into())

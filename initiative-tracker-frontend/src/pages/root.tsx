@@ -34,6 +34,11 @@ const Root = () => {
       key: 'players',
       path: '/players',
     },
+    {
+      label: t('statBlock.label'),
+      key: 'statBlocks',
+      path: '/statBlocks',
+    },
   ];
 
   const [current, setCurrent] = useState(

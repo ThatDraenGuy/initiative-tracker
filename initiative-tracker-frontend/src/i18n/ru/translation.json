@@ -5,7 +5,8 @@
     "delete": "Удалить"
   },
   "errors": {
-    "required": "Поле обязательно для ввода"
+    "required": "Поле обязательно для ввода",
+    "outOfRange": "Значение выходит за рамки дозволенного"
   },
   "pages": {
     "home": {
@@ -107,6 +108,61 @@
                 "messages": {
                     "success": "Персонаж успешно удален"
                 }
+      }
+    },
+    "statBlock": {
+      "label": "Блоки характеристик",
+      "columns": {
+        "entityName": "Имя существа",
+        "hitPoints": "Число хитов",
+        "hitDiceType": "Кость хитов",
+        "hitDiceCount": "Всего костей хитов",
+        "armorClass": "Класс доспеха",
+        "speed": "Скорость",
+        "level": "Уровень",
+        "creatureTypeName": "Тип существа"
+      },
+      "buttons": {
+        "stats": "Характеристики"
+      },
+      "createStatBlock": {
+        "title": "Создать новый стат-блок",
+        "controls": {
+          "entityName": "Имя существа",
+          "hitPoints": "Число хитов",
+          "hitDiceType":"Кость хитов",
+          "hitDiceCount": "Число костей хитов",
+          "armorClass": "Класс доспеха",
+          "speed": "Скорость",
+          "level": "Уровень",
+          "creatureTypeId": "Тип существа",
+          "proficientSkillIds": "Умения"
+        },
+        "ability": {
+          "columns": {
+            "name": "Характеристика",
+            "value": "Значение",
+            "bonus": "Бонус"
+          }
+        },
+        "placeholders": {
+          "entityName": "Гоблин-воришка"
+        }
+      },
+      "showStatBlock": {
+        "ability": {
+          "columns": {
+            "name": "Характеристика",
+            "value": "Значение",
+            "bonus": "Бонус"
+          }
+        },
+        "skill": {
+          "columns": {
+            "name": "Навык",
+            "value": "Бонус"
+          }
+        }
       }
     }
   }

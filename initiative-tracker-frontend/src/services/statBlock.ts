@@ -1,4 +1,8 @@
+import { AbilityScore } from './abilityScore';
 import { api } from './api';
+import { CreatureType } from './creatureType';
+import { DamageTypeModifier } from './damageTypeModifier';
+import { Skill } from './skill';
 
 export const statBlockApi = api.injectEndpoints({
   endpoints: builder => ({
@@ -11,6 +15,25 @@ export const statBlockApi = api.injectEndpoints({
         method: 'GET',
         params: request,
       }),
+      providesTags: ['getStatBlocksBrief'],
+    }),
+    getStatBlocks: builder.query<GetStatBlocksResponse, GetStatBlocksRequest>({
+      query: request => ({
+        url: 'statBlock',
+        method: 'GET',
+        params: request,
+      }),
+      providesTags: ['getStatBlocks'],
+    }),
+    createStatBlock: builder.mutation<
+      CreateStatBlockResponse,
+      CreateStatBlockRequest
+    >({
+      query: request => ({
+        url: 'statBlock',
+        method: 'POST',
+        body: request,
+      }),
     }),
   }),
 });
@@ -20,6 +43,27 @@ export interface GetStatBlocksBriefResponse {
   total: number;
   items: StatBlockBrief[];
 }
+
+export interface GetStatBlocksRequest {}
+export interface GetStatBlocksResponse {
+  total: number;
+  items: StatBlock[];
+}
+
+export interface CreateStatBlockRequest {
+  entityName: string;
+  hitPoints: number;
+  hitDiceType?: number;
+  hitDiceCount?: number;
+  armorClass: number;
+  speed: number;
+  level: number;
+  creatureType: { id: number };
+  abilityScores: { ability: { id: number }; score: number }[];
+  proficientSkills: { skill: { id: number } }[];
+  damageTypeModifiers: { damageType: { id: number }; modifier: number }[];
+}
+export type CreateStatBlockResponse = StatBlock;
 
 export interface StatBlockBrief {
   id: number;
@@ -32,9 +76,15 @@ export interface StatBlockBrief {
   level: number;
   creatureType: CreatureType;
 }
-export interface CreatureType {
-  id: number;
-  name: string;
+
+export interface StatBlock extends StatBlockBrief {
+  abilityScores: AbilityScore[];
+  proficientSkills: Skill[];
+  damageTypeModifiers: DamageTypeModifier[];
 }
 
-export const { useGetStatBlocksBriefQuery } = statBlockApi;
+export const {
+  useGetStatBlocksBriefQuery,
+  useGetStatBlocksQuery,
+  useCreateStatBlockMutation,
+} = statBlockApi;

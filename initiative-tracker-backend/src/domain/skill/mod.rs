@@ -2,6 +2,7 @@ use initiative_tracker_backend::derive_entity;
 
 use super::ability::Ability;
 
+pub mod actions;
 pub mod handler;
 
 #[derive_entity]
