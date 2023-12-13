@@ -28,6 +28,8 @@
         "endBattle": "Завершить битву"
       },
       "columns": {
+        "tracker": "Трекер инициативы",
+        "trackerLink": "Перейти",
         "roundNumber": "Номер раунда",
         "characters": "Участники"
       },

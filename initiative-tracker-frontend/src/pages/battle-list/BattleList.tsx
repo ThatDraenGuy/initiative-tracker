@@ -5,16 +5,29 @@ import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import StartBattle from './components/StartBattle';
 import EndBattle from './components/EndBattle';
+import { useNavigate } from 'react-router-dom';
+import Link from 'antd/lib/typography/Link';
 
 const BattleList = () => {
   const { token } = theme.useToken();
   const [openedModal, setOpenedModal] = useState('');
   const [selectedRow, setSelectedRow] = useState<Battle | undefined>(undefined);
+  const navigate = useNavigate();
 
   const { data: battles, isLoading } = useGetBattlesQuery({});
   const { t } = useTranslation('translation', { keyPrefix: 'pages.battle' });
 
   const columns = [
+    {
+      title: t('columns.tracker'),
+      dataIndex: 'id',
+      key: 'id',
+      render: (value: string) => (
+        <Link onClick={() => navigate(String(value))}>
+          {t('columns.trackerLink')}
+        </Link>
+      ),
+    },
     {
       title: t('columns.roundNumber'),
       dataIndex: 'roundNumber',
