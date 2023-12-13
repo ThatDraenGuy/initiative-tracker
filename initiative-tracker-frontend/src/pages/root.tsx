@@ -1,3 +1,10 @@
+// import './root.less';
+import {Layout, Menu, MenuProps, theme} from 'antd';
+import {Content, Footer, Header} from 'antd/es/layout/layout';
+import {SetStateAction, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Outlet, useNavigate} from 'react-router';
+import {useLocation} from 'react-router-dom';
 import { Breadcrumb, Layout, Menu, MenuProps, theme } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import { ReactNode, SetStateAction } from 'react';
@@ -8,13 +15,13 @@ import { AppRoute, appRoutes } from '../App';
 import { HomeOutlined } from '@ant-design/icons';
 
 const Root = () => {
-  const { t } = useTranslation('translation', { keyPrefix: 'pages' });
-  const location = useLocation();
-  const pathCrumbs = location.pathname.split('/').slice(1);
-  console.log(pathCrumbs);
+    const {t} = useTranslation('translation', {keyPrefix: 'pages'});
+    const location = useLocation();
+    const pathCrumbs = location.pathname.split('/').slice(1);
+    console.log(pathCrumbs);
 
-  const navigate = useNavigate();
-  const { token } = theme.useToken();
+    const navigate = useNavigate();
+    const {token} = theme.useToken();
 
   const menu_items = appRoutes.map(route => ({
     label: t(route.labelKey),

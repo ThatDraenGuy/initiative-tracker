@@ -1,17 +1,21 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { RouterProvider } from 'react-router';
-import { Provider } from 'react-redux';
-import { store } from './store';
-import { App as AntdApp } from 'antd';
-import type { MessageInstance } from 'antd/es/message/interface';
-import type { ModalStaticFunctions } from 'antd/es/modal/confirm';
-import type { NotificationInstance } from 'antd/es/notification/interface';
+import {createBrowserRouter} from 'react-router-dom';
+import {RouterProvider} from 'react-router';
+import {Provider} from 'react-redux';
+import {store} from './store';
+import {App as AntdApp} from 'antd';
+import type {MessageInstance} from 'antd/es/message/interface';
+import type {ModalStaticFunctions} from 'antd/es/modal/confirm';
+import type {NotificationInstance} from 'antd/es/notification/interface';
 import Root from './pages/root';
 import BattleList from './pages/battle-list/BattleList';
 import CharacterList from './pages/character-list/CharacterList';
 import PlayerList from './pages/players-list/PlayerList';
 import HomeScreen from './pages/home-screen/HomeScreen';
 import StatBlockList from './pages/stat-block-list/StatBlockList';
+import AbilityList from "./pages/ability-list/AbilityList";
+import CreatureTypeList from "./pages/creature-type-list/CreatureTypeList";
+import DamageTypeList from "./pages/damage-type-list/DamageTypeList";
+import SkillList from "./pages/skill-list/SkillList";
 import InitiativeList from './pages/battle-list/pages/InitiativeList';
 import { ReactNode } from 'react';
 
@@ -91,17 +95,17 @@ let notification: NotificationInstance;
 let modal: Omit<ModalStaticFunctions, 'warn'>;
 
 function App() {
-  const staticFunction = AntdApp.useApp();
-  message = staticFunction.message;
-  modal = staticFunction.modal;
-  notification = staticFunction.notification;
+    const staticFunction = AntdApp.useApp();
+    message = staticFunction.message;
+    modal = staticFunction.modal;
+    notification = staticFunction.notification;
 
-  return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  );
+    return (
+        <Provider store={store}>
+            <RouterProvider router={router}/>
+        </Provider>
+    );
 }
 
-export { message, modal, notification };
+export {message, modal, notification};
 export default App;
