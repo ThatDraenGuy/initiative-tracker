@@ -2,7 +2,7 @@ import { App, Button, Select, Space } from 'antd';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useStartBattleMutation } from '../../../services/battle';
-import { useGetCharactersQuery } from '../../../services/character';
+import { useGetCharactersBriefQuery } from '../../../services/character';
 import { useEffect, useRef } from 'react';
 import AppController from '../../../components/AppController';
 import RightModal, { RightModalRef } from '../../../components/RightModal';
@@ -24,7 +24,7 @@ const StartBattle = ({ onClose }: StartBattleProps) => {
   const { t: commonT } = useTranslation();
   const [startBattle, { isLoading, isSuccess }] = useStartBattleMutation();
   const { data: characters, isLoading: isCharactersLoading } =
-    useGetCharactersQuery({});
+    useGetCharactersBriefQuery({});
   const { handleSubmit, control, reset } = useForm<StartBattleFormProps>();
 
   useEffect(() => {

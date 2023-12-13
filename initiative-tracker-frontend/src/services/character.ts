@@ -1,16 +1,19 @@
 import { api } from './api';
 import { Player } from './player';
-import { StatBlockBrief } from './statBlock';
+import { StatBlock, StatBlockBrief } from './statBlock';
 
 export const characterApi = api.injectEndpoints({
   endpoints: builder => ({
-    getCharacters: builder.query<GetCharactersResponse, GetCharactersRequest>({
+    getCharactersBrief: builder.query<
+      GetCharactersBriefResponse,
+      GetCharactersBriefRequest
+    >({
       query: request => ({
-        url: 'character',
+        url: 'characterBrief',
         method: 'GET',
         params: request,
       }),
-      providesTags: ['getCharacters'],
+      providesTags: ['getCharactersBrief'],
     }),
     createCharacter: builder.mutation<
       CreateCharacterResponse,
@@ -21,7 +24,7 @@ export const characterApi = api.injectEndpoints({
         method: 'POST',
         body: request,
       }),
-      invalidatesTags: ['getCharacters'],
+      invalidatesTags: ['getCharacters', 'getCharactersBrief'],
     }),
     deleteCharacter: builder.mutation<
       DeleteCharacterResponse,
@@ -31,37 +34,43 @@ export const characterApi = api.injectEndpoints({
         url: `character/${request.id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['getCharacters'],
+      invalidatesTags: ['getCharacters', 'getCharactersBrief'],
     }),
   }),
 });
 
-export interface GetCharactersRequest {}
+export interface GetCharactersBriefRequest {}
 
-export interface GetCharactersResponse {
+export interface GetCharactersBriefResponse {
   total: number;
-  items: Character[];
+  items: CharacterBrief[];
 }
 
 export interface CreateCharacterRequest {
   playerId?: number;
   statBlockId: number;
 }
-export type CreateCharacterResponse = Character;
+export type CreateCharacterResponse = CharacterBrief;
 
 export interface DeleteCharacterRequest {
   id: number;
 }
 export interface DeleteCharacterResponse {}
 
-export interface Character {
+export interface CharacterBrief {
   id: number;
   player?: Player;
   statBlock: StatBlockBrief;
 }
 
+export interface Character {
+  id: number;
+  player?: Player;
+  statBlock: StatBlock;
+}
+
 export const {
-  useGetCharactersQuery,
+  useGetCharactersBriefQuery,
   useCreateCharacterMutation,
   useDeleteCharacterMutation,
 } = characterApi;

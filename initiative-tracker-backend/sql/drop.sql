@@ -37,8 +37,6 @@ DROP FUNCTION trigger_check_character_index();
 
 DROP FUNCTION trigger_check_current_stats_hp();
 
-DROP FUNCTION trigger_create_ability_scores();
-
 DROP FUNCTION trigger_check_ability_scores();
 
 DROP FUNCTION trigger_check_player_in_battle();

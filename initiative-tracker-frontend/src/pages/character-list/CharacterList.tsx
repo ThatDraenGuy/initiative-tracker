@@ -1,6 +1,9 @@
 import { Button, Space, Table, theme } from 'antd';
 import { useState } from 'react';
-import { Character, useGetCharactersQuery } from '../../services/character';
+import {
+  CharacterBrief,
+  useGetCharactersBriefQuery,
+} from '../../services/character';
 import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import CreateCharacter from './components/CreateCharacter';
@@ -11,8 +14,8 @@ const CharacterList = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'pages.character' });
   const { t: commonT } = useTranslation();
   const [openedModal, setOpenedModal] = useState('');
-  const { data: characters, isLoading } = useGetCharactersQuery({});
-  const [selectedRow, setSelectedRow] = useState<Character | undefined>();
+  const { data: characters, isLoading } = useGetCharactersBriefQuery({});
+  const [selectedRow, setSelectedRow] = useState<CharacterBrief | undefined>();
 
   const columns = [
     {
@@ -60,7 +63,7 @@ const CharacterList = () => {
           dataSource={dataSource}
           rowKey={'id'}
           loading={isLoading}
-          onRow={(record: Character) => ({
+          onRow={(record: CharacterBrief) => ({
             onClick: () =>
               setSelectedRow(
                 selectedRow?.id === record.id ? undefined : record,

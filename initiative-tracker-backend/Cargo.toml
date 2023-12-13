@@ -24,6 +24,7 @@ itertools = "0.12.0"
 once_cell = "1.18.0"
 serde = {version = "1.0.192", features = ["derive"] }
 sqlx = { version = "0.7.3", features = ["runtime-async-std-native-tls", "postgres"] }
+sqlx-conditional-queries = { version = "0.1.3", features= ["postgres"] }
 proc-macro2 = "1.0.70"
 quote = "1.0.33"
 syn = "2.0.39"

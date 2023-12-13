@@ -1,36 +1,34 @@
+use itertools::Itertools;
+
 use crate::{
-    domain::{Count, PageResponse},
+    domain::{
+        character_brief::{self, CharacterBrief},
+        stat_block,
+    },
     errors::AppResult,
     DbPool,
 };
 
 use super::{handler::CreateCharacterRequest, Character};
 
-pub async fn find(conn: &DbPool) -> AppResult<PageResponse<Character>> {
-    Ok(PageResponse::new(
-        sqlx::query_as(
-            r#"
-                SELECT *
-                FROM character c
-                LEFT JOIN player p ON c.player_id = p.player_id
-                INNER JOIN stat_block sb ON sb.stat_block_id = c.stat_block_id
-                INNER JOIN creature_type ct ON sb.creature_type_id = ct.creature_type_id;
-                "#,
-        )
-        .fetch_all(conn)
-        .await?,
-        sqlx::query_as!(
-            Count,
-            r#"
-            SELECT COUNT(*) as "count!" FROM character;
-            "#
-        )
-        .fetch_one(conn)
-        .await?,
-    ))
+pub async fn find_by_ids(conn: &DbPool, ids: &[i64]) -> AppResult<Vec<Character>> {
+    let characters_brief = character_brief::actions::find_by_ids(conn, ids).await?;
+
+    let stat_block_ids = characters_brief
+        .iter()
+        .map(|character| character.stat_block.stat_block_id)
+        .collect_vec();
+
+    let stat_blocks = stat_block::actions::find_by_ids(conn, &stat_block_ids).await?;
+
+    Ok(characters_brief
+        .into_iter()
+        .zip(stat_blocks.into_iter())
+        .map(|(brief, stat_block)| Character::new(brief, stat_block))
+        .collect_vec())
 }
 
-pub async fn create(conn: &DbPool, request: &CreateCharacterRequest) -> AppResult<Character> {
+pub async fn create(conn: &DbPool, request: &CreateCharacterRequest) -> AppResult<CharacterBrief> {
     Ok(sqlx::query_as(
         r#"
         WITH inserted AS (

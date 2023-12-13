@@ -1,7 +1,9 @@
 pub mod ability;
 pub mod ability_score;
 pub mod battle;
+pub mod battle_brief;
 pub mod character;
+pub mod character_brief;
 pub mod creature_type;
 pub mod damage_type;
 pub mod damage_type_modifier;
@@ -20,7 +22,9 @@ use sqlx::{postgres::PgRow, FromRow, Row};
 pub fn configure_domain(cfg: &mut web::ServiceConfig) {
     ability::handler::configure(cfg);
     battle::handler::configure(cfg);
+    battle_brief::handler::configure(cfg);
     character::handler::configure(cfg);
+    character_brief::handler::configure(cfg);
     creature_type::handler::configure(cfg);
     damage_type::handler::configure(cfg);
     player::handler::configure(cfg);

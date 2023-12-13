@@ -29,3 +29,16 @@ pub async fn find(
         .await?,
     ))
 }
+
+pub async fn find_by_ids(conn: &DbPool, ids: &[i64]) -> AppResult<Vec<StatBlockBrief>> {
+    Ok(sqlx::query_as(
+        r#"
+        SELECT * FROM stat_block sb
+        INNER JOIN creature_type ct ON sb.creature_type_id = ct.creature_type_id
+        WHERE sb.stat_block_id = ANY($1);
+        "#,
+    )
+    .bind(ids)
+    .fetch_all(conn)
+    .await?)
+}

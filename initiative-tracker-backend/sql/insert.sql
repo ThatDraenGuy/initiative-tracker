@@ -88,43 +88,31 @@ INSERT INTO player (player_name) VALUES
 INSERT INTO "character" (player_id,stat_block_id) VALUES
 	 (1,2),
 	 (NULL,1);
-INSERT INTO current_stats (current_hit_points,character_id,temporary_hit_points,current_hit_dice_count,current_armor_class,current_speed) VALUES
-	 (1,2,0,NULL,NULL,NULL),
-	 (NULL,1,0,NULL,NULL,NULL);
+-- INSERT INTO current_stats (current_hit_points,character_id,temporary_hit_points,current_hit_dice_count,current_armor_class,current_speed) VALUES
+-- 	 (1,2,0,NULL,NULL,NULL),
+-- 	 (NULL,1,0,NULL,NULL,NULL);
 	
 
---INSERT INTO ability_scores (stat_block_id,ability_id,score) VALUES
---	 (1,1,9),
---	 (1,2,17),
---	 (1,3,12),
---	 (1,4,16),
---	 (1,5,15),
---	 (1,6,10),
---	 (2,1,16),
---	 (2,2,8),
---	 (2,3,14),
---	 (2,4,10);
---INSERT INTO ability_scores (stat_block_id,ability_id,score) VALUES
---	 (2,5,14),
---	 (2,6,16),
---	 (3,1,20),
---	 (3,2,12),
---	 (3,3,17),
---	 (3,4,3),
---	 (3,5,12),
---	 (3,6,7);
-INSERT INTO battle (round_number,current_character_index) VALUES
-	 (1,1);
-INSERT INTO current_conditions (current_stats_id,condition_id) VALUES
-	 (1,2);
-INSERT INTO damage_type_modifiers (stat_block_id,damage_type_id,modifier) VALUES
-	 (1,10,0.5),
-	 (3,10,0.0),
-	 (3,9,0.0),
-	 (2,10,0.5);
-INSERT INTO initiative_entry (battle_id,character_id,initiative_roll) VALUES
-	 (1,1,17),
-	 (1,2,13);
+INSERT INTO ability_scores (stat_block_id,ability_id,score) VALUES
+	 (1,1,9),
+	 (1,2,17),
+	 (1,3,12),
+	 (1,4,16),
+	 (1,5,15),
+	 (1,6,10),
+	 (2,1,16),
+	 (2,2,8),
+	 (2,3,14),
+	 (2,4,10);
+INSERT INTO ability_scores (stat_block_id,ability_id,score) VALUES
+	 (2,5,14),
+	 (2,6,16),
+	 (3,1,20),
+	 (3,2,12),
+	 (3,3,17),
+	 (3,4,3),
+	 (3,5,12),
+	 (3,6,7);
 INSERT INTO proficient_skills (stat_block_id,skill_id) VALUES
 	 (1,4),
 	 (2,5),
@@ -134,3 +122,17 @@ INSERT INTO proficient_skills (stat_block_id,skill_id) VALUES
 	 (2,13),
 	 (2,18),
 	 (3,10);
+INSERT INTO damage_type_modifiers (stat_block_id,damage_type_id,modifier) VALUES
+	 (1,10,0.5),
+	 (3,10,0.0),
+	 (3,9,0.0),
+	 (2,10,0.5);
+
+SELECT * FROM start_battle(ARRAY[1, 2]);
+-- INSERT INTO battle (round_number,current_character_index) VALUES
+-- 	 (1,1);
+INSERT INTO current_conditions (current_stats_id,condition_id) VALUES
+	 (1,2);
+-- INSERT INTO initiative_entry (battle_id,character_id,initiative_roll) VALUES
+-- 	 (1,1,17),
+-- 	 (1,2,13);

@@ -130,7 +130,24 @@ pub async fn find(
         crate::domain::stat_block_brief::actions::find(conn, &FindStatBlockBriefRequest {}).await?;
     let total = stat_blocks_brief.total;
 
-    let mut stat_blocks: Vec<StatBlock> = Vec::with_capacity(total as usize);
+    Ok(PageResponse::new(
+        fetch_stat_blocks(conn, stat_blocks_brief.items).await?,
+        Count { count: total },
+    ))
+}
+
+pub async fn find_by_ids(conn: &DbPool, ids: &[i64]) -> AppResult<Vec<StatBlock>> {
+    let stat_blocks_brief =
+        crate::domain::stat_block_brief::actions::find_by_ids(conn, ids).await?;
+
+    fetch_stat_blocks(conn, stat_blocks_brief).await
+}
+
+async fn fetch_stat_blocks(
+    conn: &DbPool,
+    stat_blocks_brief: Vec<StatBlockBrief>,
+) -> AppResult<Vec<StatBlock>> {
+    let mut stat_blocks: Vec<StatBlock> = Vec::with_capacity(stat_blocks_brief.len());
     for stat_block_brief in stat_blocks_brief.into_iter() {
         let scores: Vec<AbilityScore> = sqlx::query_as(
             r#"
@@ -176,6 +193,5 @@ pub async fn find(
             damage_type_mods,
         ));
     }
-
-    Ok(PageResponse::new(stat_blocks, Count { count: total }))
+    Ok(stat_blocks)
 }

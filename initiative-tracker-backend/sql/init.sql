@@ -203,11 +203,11 @@ CREATE TABLE IF NOT EXISTS battle (
 );
 CREATE TABLE IF NOT EXISTS initiative_entry (
   battle_id int8 NOT NULL, 
-  character_id int8 NOT NULL, 
+  current_stats_id int8 NOT NULL, 
   initiative_roll int4, 
-  CONSTRAINT initiative_entry_pk PRIMARY KEY (battle_id, character_id), 
+  CONSTRAINT initiative_entry_pk PRIMARY KEY (battle_id, current_stats_id), 
   CONSTRAINT initiative_entry_fk FOREIGN KEY (battle_id) REFERENCES battle(battle_id) ON DELETE CASCADE, 
-  CONSTRAINT initiative_entry_fk1 FOREIGN KEY (character_id) REFERENCES character(character_id)
+  CONSTRAINT initiative_entry_fk1 FOREIGN KEY (current_stats_id) REFERENCES current_stats(current_stats_id) ON DELETE CASCADE
 );
 
 ------------------------------------------------------------------
@@ -226,7 +226,7 @@ CREATE OR REPLACE FUNCTION trigger_delete_stats()
 RETURNS TRIGGER AS $$
 BEGIN
     DELETE FROM current_stats cs
-    WHERE cs.character_id = OLD.character_id;
+    WHERE cs.current_stats_id = OLD.current_stats_id;
     RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
@@ -319,10 +319,14 @@ DECLARE
   maybe_player_id int8;
 BEGIN
   SELECT player_id FROM character c
-  WHERE c.character_id = NEW.character_id
+  INNER JOIN current_stats cs ON cs.current_stats_id = NEW.current_stats_id
+  WHERE c.character_id = cs.character_id
   INTO maybe_player_id;
 
-  IF maybe_player_id IS NOT NULL AND (SELECT EXISTS(SELECT * FROM initiative_entry ie WHERE ie.character_id = NEW.character_id))
+  IF maybe_player_id IS NOT NULL AND (SELECT EXISTS(
+    SELECT * FROM initiative_entry ie
+    WHERE ie.current_stats_id = NEW.current_stats_id)
+  )
   THEN
     RAISE EXCEPTION 'Игрок не может учавствовать в нескольких битвах одновременно!';
   END IF;
@@ -367,6 +371,7 @@ $func$
 declare 
   b_id int8;
 	char_id int8;
+  cs_id int8;
   hit_points int4;
   hit_dice_count int4;
   armor_class int4;
@@ -382,9 +387,15 @@ BEGIN
     WHERE c.character_id = char_id
     INTO hit_points, hit_dice_count, armor_class, speed;
     INSERT INTO current_stats (current_hit_points,character_id,temporary_hit_points,current_hit_dice_count,current_armor_class,current_speed) VALUES
-	    (hit_points,char_id,0,hit_dice_count,armor_class,speed);
-    INSERT INTO initiative_entry (battle_id,character_id,initiative_roll) VALUES
-	    (b_id,char_id,0);
+	    (hit_points,char_id,0,hit_dice_count,armor_class,speed)
+    RETURNING current_stats_id
+    INTO cs_id;
+    INSERT INTO initiative_entry (battle_id,current_stats_id,initiative_roll) VALUES
+	    (b_id,cs_id,roll_ability_check(
+        char_id, (
+          SELECT ability_id FROM ability WHERE ability_name = 'ЛОВКОСТЬ'
+        )
+        ));
   END LOOP;
   RETURN b_id;
 END;

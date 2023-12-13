@@ -1,5 +1,5 @@
 use actix_web::{
-    delete, get, post,
+    delete, post,
     web::{self, Data, Json, Path},
 };
 use initiative_tracker_backend::{derive_request, derive_response};
@@ -7,20 +7,15 @@ use initiative_tracker_backend::{derive_request, derive_response};
 use super::{actions, Character};
 use crate::{
     domain::{
-        player::handler::PlayerResponse, stat_block_brief::handler::StatBlockBriefResponse,
-        PageResponse,
+        character_brief::handler::CharacterBriefResponse, player::handler::PlayerResponse,
+        stat_block::handler::StatBlockResponse,
     },
     errors::AppResult,
     DbPool, ValidJson,
 };
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
-    cfg.service(
-        web::scope("/character")
-            .service(find)
-            .service(create)
-            .service(delete),
-    );
+    cfg.service(web::scope("/character").service(create).service(delete));
 }
 
 #[derive_request]
@@ -30,11 +25,11 @@ pub struct CreateCharacterRequest {
 }
 
 #[derive_response]
-struct CharacterResponse {
+pub struct CharacterResponse {
     pub id: i64,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub player: Option<PlayerResponse>,
-    pub stat_block: StatBlockBriefResponse,
+    pub stat_block: StatBlockResponse,
 }
 impl From<Character> for CharacterResponse {
     fn from(value: Character) -> Self {
@@ -46,16 +41,11 @@ impl From<Character> for CharacterResponse {
     }
 }
 
-#[get("")]
-async fn find(db_pool: Data<DbPool>) -> AppResult<PageResponse<CharacterResponse>> {
-    Ok(actions::find(&db_pool).await?.map_into())
-}
-
 #[post("")]
 async fn create(
     request: ValidJson<CreateCharacterRequest>,
     db_pool: Data<DbPool>,
-) -> AppResult<Json<CharacterResponse>> {
+) -> AppResult<Json<CharacterBriefResponse>> {
     Ok(Json(actions::create(&db_pool, &request).await?.into()))
 }
 
