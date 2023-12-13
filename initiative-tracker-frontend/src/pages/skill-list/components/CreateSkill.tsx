@@ -1,7 +1,7 @@
 import {App, Button, Input, Select, Space} from 'antd';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useGetCharactersQuery } from '../../../services/character';
+import { useGetAbilitiesQuery } from '../../../services/ability';
 import { useEffect, useRef } from 'react';
 import AppController from '../../../components/AppController';
 import RightModal, { RightModalRef } from '../../../components/RightModal';
@@ -24,14 +24,13 @@ const CreateSkill = ({ onClose }: CreateSkillProps) => {
   });
   const { t: commonT } = useTranslation();
   const [createSkill, { isLoading, isSuccess }] = useCreateSkillMutation();
-  const { data: characters, isLoading: isCharactersLoading } =
-      useGetCharactersQuery({});
+  const { data: abilitys, isLoading: isAbilitiesLoading } =
+      useGetAbilitiesQuery({});
   const { handleSubmit, control, reset } = useForm<CreateSkillFormProps>();
 
   useEffect(() => {
     reset({
       name: "",
-      abilityId: 0
     });
   }, []);
 
@@ -42,9 +41,9 @@ const CreateSkill = ({ onClose }: CreateSkillProps) => {
     }
   }, [isSuccess]);
 
-  const characterOptions = characters?.items.map(character => ({
-    label: character.statBlock.entityName,
-    value: character.id,
+  const abilityOptions = abilitys?.items.map(ability => ({
+    label: ability.name,
+    value: ability.id,
   }));
 
   const onSubmit = async (data: CreateSkillFormProps) => {
@@ -88,12 +87,12 @@ const CreateSkill = ({ onClose }: CreateSkillProps) => {
                       onChange={onChange}
                       onBlur={onBlur}
                       value={value}
-                      placeholder={t('placeholders.name')}
+                      placeholder={t('name.placeholder')}
                   />
               )}
           />
           <AppController
-              title={t('controls.abilityId')}
+              title={t('controls.ability')}
               control={control}
               name="abilityId"
               rules={{
@@ -104,13 +103,11 @@ const CreateSkill = ({ onClose }: CreateSkillProps) => {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                   <Select
-                      mode="tags"
-                      allowClear
                       style={{ width: '100%' }}
                       onChange={onChange}
                       onBlur={onBlur}
-                      loading={isCharactersLoading}
-                      options={characterOptions}
+                      loading={isAbilitiesLoading}
+                      options={abilityOptions}
                       value={value}
                   />
               )}

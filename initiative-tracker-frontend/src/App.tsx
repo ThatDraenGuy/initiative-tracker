@@ -12,12 +12,12 @@ import CharacterList from './pages/character-list/CharacterList';
 import PlayerList from './pages/players-list/PlayerList';
 import HomeScreen from './pages/home-screen/HomeScreen';
 import StatBlockList from './pages/stat-block-list/StatBlockList';
-import AbilityList from "./pages/ability-list/AbilityList";
-import CreatureTypeList from "./pages/creature-type-list/CreatureTypeList";
-import DamageTypeList from "./pages/damage-type-list/DamageTypeList";
-import SkillList from "./pages/skill-list/SkillList";
 import InitiativeList from './pages/battle-list/pages/InitiativeList';
 import { ReactNode } from 'react';
+import SkillList from "./pages/skill-list/SkillList";
+import DamageTypeList from "./pages/damage-type-list/DamageTypeList";
+import CreatureTypeList from "./pages/creature-type-list/CreatureTypeList";
+import AbilityList from "./pages/ability-list/AbilityList";
 
 export interface AppRoute {
   labelKey: string;
@@ -64,6 +64,30 @@ export const appRoutes: AppRoute[] = [
     key: 'statBlocks',
     path: '/statBlocks',
     element: <StatBlockList />,
+  },
+  {
+    labelKey: 'skill.label',
+    key: 'skills',
+    path: '/skills',
+    element: <SkillList />,
+  },
+  {
+    labelKey: 'damageType.label',
+    key: 'damageTypes',
+    path: '/damageTypes',
+    element: <DamageTypeList />,
+  },
+  {
+    labelKey: 'creatureType.label',
+    key: 'creatureTypes',
+    path: '/creatureTypes',
+    element: <CreatureTypeList />,
+  },
+  {
+    labelKey: 'ability.label',
+    key: 'abilities',
+    path: '/abilities',
+    element: <AbilityList />,
   },
 ];
 
