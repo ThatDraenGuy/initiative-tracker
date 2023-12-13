@@ -1,5 +1,5 @@
 const InitiativeList = () => {
-  return <div style={{ height: '100%' }}>stuff goes here</div>;
+  return <>stuff</>;
 };
 
 export default InitiativeList;

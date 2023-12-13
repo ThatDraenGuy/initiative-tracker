@@ -50,6 +50,9 @@
         "messages": {
           "success": "Битва успешно удалена"
         }
+      },
+      "initiative": {
+        "label": "Трекер инициативы"
       }
     },
     "player": {

@@ -12,33 +12,77 @@ import CharacterList from './pages/character-list/CharacterList';
 import PlayerList from './pages/players-list/PlayerList';
 import HomeScreen from './pages/home-screen/HomeScreen';
 import StatBlockList from './pages/stat-block-list/StatBlockList';
+import InitiativeList from './pages/battle-list/pages/InitiativeList';
+import { ReactNode } from 'react';
+
+export interface AppRoute {
+  labelKey: string;
+  key?: string;
+  path: string;
+  element: ReactNode;
+  children?: AppRoute[];
+}
+
+export const appRoutes: AppRoute[] = [
+  {
+    labelKey: 'home.label',
+    key: '',
+    path: '/',
+    element: <HomeScreen />,
+  },
+  {
+    labelKey: 'battle.label',
+    key: 'battles',
+    path: '/battles',
+    element: <BattleList />,
+    children: [
+      {
+        labelKey: 'battle.initiative.label',
+        path: '/battles/:battleId',
+        element: <InitiativeList />,
+      },
+    ],
+  },
+  {
+    labelKey: 'character.label',
+    key: 'characters',
+    path: '/characters',
+    element: <CharacterList />,
+  },
+  {
+    labelKey: 'player.label',
+    key: 'players',
+    path: '/players',
+    element: <PlayerList />,
+  },
+  {
+    labelKey: 'statBlock.label',
+    key: 'statBlocks',
+    path: '/statBlocks',
+    element: <StatBlockList />,
+  },
+];
+
+interface WithChildren {
+  children?: WithChildren[];
+}
+function flattenChildren(array: WithChildren[]): any[] {
+  let result: any[] = [];
+  array.forEach(elem => {
+    result.push({ ...elem, children: undefined });
+    if (Array.isArray(elem.children)) {
+      result = result.concat(flattenChildren(elem.children));
+    }
+  });
+  console.log(result);
+  return result;
+}
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    children: [
-      {
-        path: '/battles',
-        element: <BattleList />,
-      },
-      {
-        path: 'characters',
-        element: <CharacterList />,
-      },
-      {
-        path: 'players',
-        element: <PlayerList />,
-      },
-      {
-        path: 'statBlocks',
-        element: <StatBlockList />,
-      },
-      {
-        path: '/',
-        element: <HomeScreen />,
-      },
-    ],
+    children: flattenChildren(appRoutes),
   },
 ]);
 

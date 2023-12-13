@@ -1,54 +1,64 @@
-// import './root.less';
-import { Layout, Menu, MenuProps, theme } from 'antd';
+import { Breadcrumb, Layout, Menu, MenuProps, theme } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
-import { SetStateAction, useState } from 'react';
+import { ReactNode, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
+import { AppRoute, appRoutes } from '../App';
+import { HomeOutlined } from '@ant-design/icons';
 
 const Root = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'pages' });
   const location = useLocation();
+  const pathCrumbs = location.pathname.split('/').slice(1);
+  console.log(pathCrumbs);
 
   const navigate = useNavigate();
   const { token } = theme.useToken();
 
-  const menu_items = [
-    {
-      label: t('home.label'),
-      key: 'home',
-      path: '/',
-    },
-    {
-      label: t('battle.label'),
-      key: 'battles',
-      path: '/battles',
-    },
-    {
-      label: t('character.label'),
-      key: 'characters',
-      path: '/characters',
-    },
-    {
-      label: t('player.label'),
-      key: 'players',
-      path: '/players',
-    },
-    {
-      label: t('statBlock.label'),
-      key: 'statBlocks',
-      path: '/statBlocks',
-    },
-  ];
+  const menu_items = appRoutes.map(route => ({
+    label: t(route.labelKey),
+    key: route.key,
+    path: route.path,
+  }));
 
-  const [current, setCurrent] = useState(
-    menu_items.find(item => item.path === location.pathname)?.key ?? 'home',
-  );
+  const findCrumb = (
+    crumb: string,
+    routes: AppRoute[],
+  ): AppRoute | undefined => {
+    if (Number(crumb)) {
+      return routes[0];
+    } else {
+      return routes.find(route => route.key === crumb);
+    }
+  };
+
+  const constructCrumbs = () => {
+    let routes = appRoutes;
+    let breadCrumbs: { title: ReactNode; onClick: () => void }[] = [
+      { title: <HomeOutlined />, onClick: () => navigate('/') },
+    ];
+    for (const [index, crumb] of pathCrumbs.entries()) {
+      const route = findCrumb(crumb, routes);
+      breadCrumbs.push({
+        title: t(route?.labelKey ?? 'deafaultLabel'),
+        onClick: () => {
+          navigate(
+            '/' +
+              pathCrumbs
+                .slice(0, index + 1)
+                .reduce((acc, val) => acc + '/' + val),
+          );
+        },
+      });
+      routes = route?.children ?? [];
+    }
+    return breadCrumbs;
+  };
 
   const onClick: MenuProps['onClick'] = (e: {
     key: SetStateAction<string>;
   }) => {
-    setCurrent(e.key);
     navigate(menu_items.find(item => item.key === e.key)?.path ?? '/');
   };
 
@@ -71,7 +81,9 @@ const Root = () => {
           style={{ width: '100%' }}
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={[current]}
+          selectedKeys={[
+            menu_items.find(item => item.key === pathCrumbs[0])?.key,
+          ]}
           onClick={onClick}
           items={menu_items}
         />
@@ -80,14 +92,15 @@ const Root = () => {
         style={{
           paddingLeft: token.sizeMD,
           paddingRight: token.sizeMD,
-          margin: token.sizeSM,
-          backgroundColor: token.colorBgBlur,
         }}
       >
+        <Breadcrumb style={{ margin: '16px 0' }} items={constructCrumbs()} />
         <div
           style={{
             background: token.colorBgContainer,
-            height: '100%',
+            minHeight: 700,
+            padding: 24,
+            borderRadius: token.borderRadiusLG,
           }}
         >
           <Outlet />
