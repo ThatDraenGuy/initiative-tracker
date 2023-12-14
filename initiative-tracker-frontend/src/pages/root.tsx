@@ -93,6 +93,7 @@ const Root = () => {
         style={{
           paddingLeft: token.sizeMD,
           paddingRight: token.sizeMD,
+          overflow: 'auto',
         }}
       >
         <Breadcrumb style={{ margin: '16px 0' }} items={constructCrumbs()} />
