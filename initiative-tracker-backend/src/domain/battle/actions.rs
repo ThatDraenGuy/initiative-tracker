@@ -34,6 +34,7 @@ pub async fn find_by_id(conn: &DbPool, id: &i64) -> AppResult<Battle> {
         FROM initiative_entry ie
         INNER JOIN current_stats cs ON cs.current_stats_id = ie.current_stats_id
         WHERE ie.battle_id = $1
+        ORDER BY ie.initiative_roll DESC
         "#,
     )
     .bind(battle_brief.battle_id)

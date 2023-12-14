@@ -1,6 +1,6 @@
 use crate::{
     domain::{Count, PageResponse},
-    errors::AppResult,
+    errors::{AppError, AppResult},
     DbPool,
 };
 
@@ -48,7 +48,7 @@ pub async fn create(conn: &DbPool, request: &CreatePlayerRequest) -> AppResult<P
 }
 
 pub async fn delete(conn: &DbPool, id: &i64) -> AppResult<()> {
-    sqlx::query!(
+    let count = sqlx::query!(
         r#"
         DELETE FROM player
         WHERE player_id = $1
@@ -58,5 +58,9 @@ pub async fn delete(conn: &DbPool, id: &i64) -> AppResult<()> {
     .execute(conn)
     .await?;
 
-    Ok(())
+    if count.rows_affected() == 0 {
+        Err(AppError::NotFound)
+    } else {
+        Ok(())
+    }
 }

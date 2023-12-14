@@ -1,10 +1,30 @@
 use crate::{
     domain::{Count, PageResponse},
-    errors::AppResult,
+    errors::{AppError, AppResult},
     DbPool,
 };
 
-use super::{handler::FindSkillRequest, Skill};
+use super::{
+    handler::{CreateSkillRequest, FindSkillRequest},
+    Skill,
+};
+
+pub async fn create(conn: &DbPool, request: &CreateSkillRequest) -> AppResult<Skill> {
+    Ok(sqlx::query_as(
+        r#"
+        WITH inserted AS (
+            INSERT INTO skill (skill_name, ability_id)
+            VALUES ($1, $2)
+            RETURNING *
+        ) SELECT * FROM inserted i
+        INNER JOIN ability a ON i.ability_id = a.ability_id;
+        "#,
+    )
+    .bind(&request.name)
+    .bind(request.ability_id)
+    .fetch_one(conn)
+    .await?)
+}
 
 pub async fn find(conn: &DbPool, _condition: &FindSkillRequest) -> AppResult<PageResponse<Skill>> {
     Ok(PageResponse::new(
@@ -27,4 +47,21 @@ pub async fn find(conn: &DbPool, _condition: &FindSkillRequest) -> AppResult<Pag
         .fetch_one(conn)
         .await?,
     ))
+}
+
+pub async fn delete(conn: &DbPool, id: &i64) -> AppResult<()> {
+    let count = sqlx::query!(
+        r#"
+        DELETE FROM skill WHERE skill_id = $1
+        "#,
+        id
+    )
+    .execute(conn)
+    .await?;
+
+    if count.rows_affected() == 0 {
+        Err(AppError::NotFound)
+    } else {
+        Ok(())
+    }
 }

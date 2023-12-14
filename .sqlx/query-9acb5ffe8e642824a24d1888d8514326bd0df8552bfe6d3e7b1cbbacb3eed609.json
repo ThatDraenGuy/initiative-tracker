@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        INSERT INTO creature_type\n        (creature_type_name)\n        VALUES ($1)\n        RETURNING *;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "creature_type_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "creature_type_name",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "9acb5ffe8e642824a24d1888d8514326bd0df8552bfe6d3e7b1cbbacb3eed609"
+}

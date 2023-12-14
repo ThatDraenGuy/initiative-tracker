@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS skill (
   ability_id int8 NOT NULL, 
   CONSTRAINT skill_pk PRIMARY KEY (skill_id), 
   CONSTRAINT skill_un UNIQUE (skill_name), 
-  CONSTRAINT skill_fk FOREIGN KEY (ability_id) REFERENCES ability(ability_id),
+  CONSTRAINT skill_fk FOREIGN KEY (ability_id) REFERENCES ability(ability_id) ON DELETE CASCADE,
   CONSTRAINT name_check CHECK (
     (
       (skill_name):: text <> '' :: text
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS stat_block (
   creature_type_id int8 NOT NULL, 
   CONSTRAINT stat_block_pk PRIMARY KEY (stat_block_id), 
   CONSTRAINT stat_block_fk FOREIGN KEY (hit_dice_type) REFERENCES dice_type(side_count), 
-  CONSTRAINT stat_block_fk1 FOREIGN KEY (creature_type_id) REFERENCES creature_type(creature_type_id),
+  CONSTRAINT stat_block_fk1 FOREIGN KEY (creature_type_id) REFERENCES creature_type(creature_type_id) ON DELETE CASCADE,
   CONSTRAINT name_check CHECK (
     (
       (entity_name):: text <> '' :: text
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS ability_scores (
   score int4 NOT NULL, 
   CONSTRAINT ability_scores_pk PRIMARY KEY (stat_block_id, ability_id), 
   CONSTRAINT ability_scores_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id) ON DELETE CASCADE, 
-  CONSTRAINT ability_scores_fk1 FOREIGN KEY (ability_id) REFERENCES ability(ability_id),
+  CONSTRAINT ability_scores_fk1 FOREIGN KEY (ability_id) REFERENCES ability(ability_id) ON DELETE CASCADE,
   CONSTRAINT score_check CHECK (
     (
       score >= 1
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS proficient_skills (
   skill_id int8 NOT NULL, 
   CONSTRAINT proficient_skills_pk PRIMARY KEY (stat_block_id, skill_id), 
   CONSTRAINT proficient_skills_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id) ON DELETE CASCADE, 
-  CONSTRAINT proficient_skills_fk1 FOREIGN KEY (skill_id) REFERENCES skill(skill_id)
+  CONSTRAINT proficient_skills_fk1 FOREIGN KEY (skill_id) REFERENCES skill(skill_id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS damage_type_modifiers (
   stat_block_id int8 NOT NULL, 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS damage_type_modifiers (
   modifier float4 NOT NULL, 
   CONSTRAINT damage_type_modifiers_pk PRIMARY KEY (stat_block_id, damage_type_id), 
   CONSTRAINT damage_type_modifiers_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id) ON DELETE CASCADE, 
-  CONSTRAINT damage_type_modifiers_fk1 FOREIGN KEY (damage_type_id) REFERENCES damage_type(damage_type_id),
+  CONSTRAINT damage_type_modifiers_fk1 FOREIGN KEY (damage_type_id) REFERENCES damage_type(damage_type_id) ON DELETE CASCADE,
   CONSTRAINT modifier_check CHECK (
     (
       modifier >= 0
@@ -144,10 +144,10 @@ CREATE TABLE IF NOT EXISTS player (
 );
 CREATE TABLE IF NOT EXISTS character (
   character_id serial8 NOT NULL, 
-  player_id int8, 
+  player_id int8 NULL, 
   stat_block_id int8 NOT NULL, 
   CONSTRAINT character_pk PRIMARY KEY (character_id), 
-  CONSTRAINT character_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id), 
+  CONSTRAINT character_fk FOREIGN KEY (stat_block_id) REFERENCES stat_block(stat_block_id) ON DELETE CASCADE, 
   CONSTRAINT character_fk1 FOREIGN KEY (player_id) REFERENCES player(player_id) ON DELETE SET NULL
 );
 CREATE TABLE IF NOT EXISTS current_stats (

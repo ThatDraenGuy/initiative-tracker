@@ -5,7 +5,7 @@ use crate::{
         character_brief::{self, CharacterBrief},
         stat_block,
     },
-    errors::AppResult,
+    errors::{AppError, AppResult},
     DbPool,
 };
 
@@ -48,7 +48,7 @@ pub async fn create(conn: &DbPool, request: &CreateCharacterRequest) -> AppResul
 }
 
 pub async fn delete(conn: &DbPool, id: &i64) -> AppResult<()> {
-    sqlx::query!(
+    let count = sqlx::query!(
         r#"
         DELETE FROM character
         WHERE character_id = $1
@@ -57,5 +57,10 @@ pub async fn delete(conn: &DbPool, id: &i64) -> AppResult<()> {
     )
     .execute(conn)
     .await?;
-    Ok(())
+
+    if count.rows_affected() == 0 {
+        Err(AppError::NotFound)
+    } else {
+        Ok(())
+    }
 }

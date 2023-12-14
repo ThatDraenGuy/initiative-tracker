@@ -1,6 +1,6 @@
 use crate::{
     domain::{Count, PageResponse},
-    errors::AppError,
+    errors::{AppError, AppResult},
     DbPool,
 };
 
@@ -55,4 +55,21 @@ pub async fn find(
         .fetch_one(conn)
         .await?,
     ))
+}
+
+pub async fn delete(conn: &DbPool, id: &i64) -> AppResult<()> {
+    let count = sqlx::query!(
+        r#"
+        DELETE FROM ability WHERE ability_id = $1
+        "#,
+        id
+    )
+    .execute(conn)
+    .await?;
+
+    if count.rows_affected() == 0 {
+        Err(AppError::NotFound)
+    } else {
+        Ok(())
+    }
 }
