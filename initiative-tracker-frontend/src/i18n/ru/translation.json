@@ -54,7 +54,24 @@
         }
       },
       "initiative": {
-        "label": "Трекер инициативы"
+        "label": "Трекер инициативы",
+        "titles": {
+          "roundNumber": "Номер раунда: {{roundNumber}}"
+        },
+        "buttons": {
+          "nextInitiative": "Следующий персонаж"
+        },
+        "actions": {
+          "damage": "Нанести урон",
+          "heal": "Восстановить хиты"
+        },
+        "columns": {
+          "hitPoints": "Число хитов",
+          "tempHitPoints": "Временные хиты",
+          "hitDiceCount": "Число костей хитов",
+          "armorClass": "Класс доспеха",
+          "speed": "Скорость"
+        }
       }
     },
     "player": {

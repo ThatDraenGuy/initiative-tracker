@@ -78,7 +78,7 @@ export interface InitiativeEntry {
 export interface CurrentStats {
   id: number;
   hitPoints?: number;
-  tempHitPoints?: number;
+  tempHitPoints: number;
   hidDiceCount?: number;
   armorClass?: number;
   speed?: number;
@@ -86,6 +86,7 @@ export interface CurrentStats {
 
 export const {
   useGetBattlesBriefQuery,
+  useGetBattleByIdQuery,
   useStartBattleMutation,
   useDeleteBattleMutation,
 } = battleApi;

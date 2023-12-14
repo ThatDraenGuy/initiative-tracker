@@ -11,7 +11,6 @@ const Root = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'pages' });
   const location = useLocation();
   const pathCrumbs = location.pathname.split('/').slice(1);
-  console.log(pathCrumbs);
 
   const navigate = useNavigate();
   const { token } = theme.useToken();

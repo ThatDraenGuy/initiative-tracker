@@ -35,7 +35,8 @@ pub async fn find_by_ids(conn: &DbPool, ids: &[i64]) -> AppResult<Vec<StatBlockB
         r#"
         SELECT * FROM stat_block sb
         INNER JOIN creature_type ct ON sb.creature_type_id = ct.creature_type_id
-        WHERE sb.stat_block_id = ANY($1);
+        INNER JOIN UNNEST($1) WITH ORDINALITY t(stat_block_id, ord) USING (stat_block_id)
+        ORDER BY t.ord;
         "#,
     )
     .bind(ids)
