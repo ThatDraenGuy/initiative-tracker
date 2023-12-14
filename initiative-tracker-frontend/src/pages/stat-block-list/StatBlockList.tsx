@@ -80,7 +80,7 @@ const StatBlockList = () => {
         <Space
           direction="horizontal"
           size="middle"
-          style={{ padding: token.sizeSM }}
+          style={{ padding: token.sizeSM, width: '100%', overflow: 'auto' }}
         >
           <Button
             icon={<PlusOutlined />}
@@ -118,6 +118,7 @@ const StatBlockList = () => {
           dataSource={dataSource}
           rowKey={'id'}
           loading={isLoading}
+          style={{ width: '100%', overflow: 'auto' }}
         />
       </Space>
       {openedModal === 'create' && (

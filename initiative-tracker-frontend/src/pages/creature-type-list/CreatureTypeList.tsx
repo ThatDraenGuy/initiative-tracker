@@ -40,7 +40,7 @@ const CreatureTypeList = () => {
         <Space
           direction="horizontal"
           size="middle"
-          style={{ padding: token.sizeSM }}
+          style={{ padding: token.sizeSM, width: '100%', overflow: 'auto' }}
         >
           <Button
             icon={<PlusOutlined />}
@@ -73,6 +73,7 @@ const CreatureTypeList = () => {
           dataSource={dataSource}
           rowKey={'id'}
           loading={isLoading}
+          style={{ width: '100%', overflow: 'auto' }}
         />
       </Space>
       {openedModal === 'create_creature_type' && (
