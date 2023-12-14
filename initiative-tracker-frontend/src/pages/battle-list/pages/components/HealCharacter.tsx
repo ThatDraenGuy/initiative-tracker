@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { InitiativeEntry, useHealMutation } from '../../../../services/battle';
 import RightModal, { RightModalRef } from '../../../../components/RightModal';
 import { App, Button, InputNumber, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import AppController from '../../../../components/AppController';
+import { useHealMutation } from '../../../../services/currentStats';
+import { InitiativeEntry } from '../../../../services/initiativeEntry';
 
 export interface HealCharacterProps {
   onClose: () => void;

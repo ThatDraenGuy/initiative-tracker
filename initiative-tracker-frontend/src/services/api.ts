@@ -30,7 +30,7 @@ export const api = createApi({
   tagTypes: [
     'getAbilities',
     'getBattles',
-    'getBattlesBrief',
+    'getCurrentStats',
     'getCharacters',
     'getCharactersBrief',
     'getPlayers',

@@ -1,13 +1,13 @@
 pub mod ability;
 pub mod ability_score;
 pub mod battle;
-pub mod battle_brief;
 pub mod character;
 pub mod character_brief;
 pub mod creature_type;
 pub mod current_stats;
 pub mod damage_type;
 pub mod damage_type_modifier;
+pub mod initiative_entry;
 pub mod player;
 pub mod skill;
 pub mod stat_block;
@@ -23,12 +23,12 @@ use sqlx::{postgres::PgRow, FromRow, Row};
 pub fn configure_domain(cfg: &mut web::ServiceConfig) {
     ability::handler::configure(cfg);
     battle::handler::configure(cfg);
-    battle_brief::handler::configure(cfg);
     character::handler::configure(cfg);
     character_brief::handler::configure(cfg);
     current_stats::handler::configure(cfg);
     creature_type::handler::configure(cfg);
     damage_type::handler::configure(cfg);
+    initiative_entry::handler::configure(cfg);
     player::handler::configure(cfg);
     stat_block_brief::handler::configure(cfg);
     stat_block::handler::configure(cfg);

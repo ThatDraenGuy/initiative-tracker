@@ -1,14 +1,12 @@
 import { useEffect, useRef } from 'react';
-import {
-  InitiativeEntry,
-  useDamageMutation,
-} from '../../../../services/battle';
 import RightModal, { RightModalRef } from '../../../../components/RightModal';
 import { App, Button, InputNumber, Select, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import AppController from '../../../../components/AppController';
 import { useGetDamageTypesQuery } from '../../../../services/damageType';
+import { InitiativeEntry } from '../../../../services/initiativeEntry';
+import { useDamageMutation } from '../../../../services/currentStats';
 
 export interface DamageCharacterProps {
   onClose: () => void;

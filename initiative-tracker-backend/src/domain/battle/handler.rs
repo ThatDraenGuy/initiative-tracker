@@ -3,27 +3,24 @@ use actix_web::{
     web::{self, Data, Json, Path},
 };
 use initiative_tracker_backend::{derive_request, derive_response};
-use itertools::Itertools;
 
-use super::{actions, Battle, InitiativeEntry};
-use crate::{
-    domain::{
-        battle_brief::handler::BattleBriefResponse, character::handler::CharacterResponse,
-        current_stats::handler::CurrentStatsResponse,
-    },
-    errors::AppResult,
-    DbPool, ValidJson,
-};
+use crate::{domain::PageResponse, errors::AppResult, DbPool, ValidJson, ValidQuery};
+
+use super::{actions, Battle};
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/battle")
-            .service(start)
+            .service(find)
             .service(find_by_id)
+            .service(start)
             .service(end)
             .service(next_initiative),
     );
 }
+
+#[derive_request]
+pub struct FindBattleRequest {}
 
 #[derive_request]
 pub struct StartBattleRequest {
@@ -32,11 +29,10 @@ pub struct StartBattleRequest {
 
 #[derive_response]
 pub struct BattleResponse {
-    pub id: i64,
-    pub round_number: i32,
-    pub character_amount: i64,
-    pub current_character_index: i32,
-    pub entries: Vec<InitiativeEntryResponse>,
+    id: i64,
+    round_number: i32,
+    character_amount: i64,
+    current_character_index: i32,
 }
 impl From<Battle> for BattleResponse {
     fn from(value: Battle) -> Self {
@@ -45,25 +41,16 @@ impl From<Battle> for BattleResponse {
             round_number: value.round_number,
             character_amount: value.character_amount,
             current_character_index: value.current_character_index,
-            entries: value.entries.into_iter().map_into().collect_vec(),
         }
     }
 }
 
-#[derive_response]
-pub struct InitiativeEntryResponse {
-    pub character: CharacterResponse,
-    pub current_stats: CurrentStatsResponse,
-    pub roll: i32,
-}
-impl From<InitiativeEntry> for InitiativeEntryResponse {
-    fn from(value: InitiativeEntry) -> Self {
-        Self {
-            character: value.character.into(),
-            current_stats: value.current_stats.into(),
-            roll: value.initiative_roll,
-        }
-    }
+#[get("")]
+async fn find(
+    condition: ValidQuery<FindBattleRequest>,
+    db_pool: Data<DbPool>,
+) -> AppResult<PageResponse<BattleResponse>> {
+    Ok(actions::find(&db_pool, &condition).await?.map_into())
 }
 
 #[get("/{id}")]
@@ -75,7 +62,7 @@ async fn find_by_id(id: Path<i64>, db_pool: Data<DbPool>) -> AppResult<Json<Batt
 async fn start(
     dto: ValidJson<StartBattleRequest>,
     db_pool: Data<DbPool>,
-) -> AppResult<Json<BattleBriefResponse>> {
+) -> AppResult<Json<BattleResponse>> {
     Ok(Json(actions::start(&db_pool, &dto).await?.into()))
 }
 

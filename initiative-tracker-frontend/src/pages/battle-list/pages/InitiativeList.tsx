@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import {
-  InitiativeEntry,
   useGetBattleByIdQuery,
   useNextInitiativeMutation,
 } from '../../../services/battle';
@@ -18,6 +17,10 @@ import {
 import DamageCharacter from './components/DamageCharacter';
 import HealCharacter from './components/HealCharacter';
 import EditCurrentStats from './components/EditCurrentStats';
+import {
+  InitiativeEntry,
+  useGetInitiativeEntriesQuery,
+} from '../../../services/initiativeEntry';
 
 const InitiativeList = () => {
   const { token } = theme.useToken();
@@ -30,11 +33,14 @@ const InitiativeList = () => {
 
   const { battleId: battleIdStr } = useParams();
   const battleId = Number(battleIdStr);
-  const { data: battle, isLoading } = useGetBattleByIdQuery(battleId);
+  const { data: battle, isLoading: isBattleLoading } =
+    useGetBattleByIdQuery(battleId);
+  const { data: initiativeEntries, isLoading: isInitiativeEntriesLoading } =
+    useGetInitiativeEntriesQuery({ battleId: battleId });
   const [nextInitiative, { isLoading: isNextInitiativeLoading }] =
     useNextInitiativeMutation();
 
-  const entriesDataSource = battle?.entries ?? [];
+  const entriesDataSource = initiativeEntries?.items ?? [];
 
   const onNextInitiativeClick = async () => {
     await nextInitiative(battleId);
@@ -57,7 +63,13 @@ const InitiativeList = () => {
             {t('buttons.nextInitiative')}
           </Button>
         </Space>
-        <Spin spinning={isLoading || isNextInitiativeLoading}>
+        <Spin
+          spinning={
+            isBattleLoading ||
+            isInitiativeEntriesLoading ||
+            isNextInitiativeLoading
+          }
+        >
           <List
             itemLayout="vertical"
             dataSource={entriesDataSource}

@@ -1,5 +1,5 @@
 import { Button, Space, Table, theme } from 'antd';
-import { BattleBrief, useGetBattlesBriefQuery } from '../../services/battle';
+import { Battle, useGetBattlesQuery } from '../../services/battle';
 import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
@@ -11,12 +11,10 @@ import Link from 'antd/lib/typography/Link';
 const BattleList = () => {
   const { token } = theme.useToken();
   const [openedModal, setOpenedModal] = useState('');
-  const [selectedRow, setSelectedRow] = useState<BattleBrief | undefined>(
-    undefined,
-  );
+  const [selectedRow, setSelectedRow] = useState<Battle | undefined>(undefined);
   const navigate = useNavigate();
 
-  const { data: battles, isLoading } = useGetBattlesBriefQuery({});
+  const { data: battles, isLoading } = useGetBattlesQuery({});
   const { t } = useTranslation('translation', { keyPrefix: 'pages.battle' });
 
   const columns = [
@@ -71,7 +69,7 @@ const BattleList = () => {
           </Button>
         </Space>
         <Table
-          onRow={(record: BattleBrief) => ({
+          onRow={(record: Battle) => ({
             onClick: () =>
               setSelectedRow(
                 selectedRow?.id === record.id ? undefined : record,
