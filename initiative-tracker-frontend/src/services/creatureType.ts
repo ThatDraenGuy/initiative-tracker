@@ -13,10 +13,32 @@ const creatureTypeApi = api.injectEndpoints({
       }),
       providesTags: ['getCreatureTypes'],
     }),
+    createCreatureType: builder.mutation<
+      CreateCreatureTypeResponse,
+      CreateCreatureTypeRequest
+    >({
+      query: request => ({
+        url: `creatureType`,
+        method: 'POST',
+        body: request,
+      }),
+      invalidatesTags: ['getCreatureTypes'],
+    }),
+    deleteCreatureType: builder.mutation<
+      DeleteCreatureTypeResponse,
+      DeleteCreatureTypeRequest
+    >({
+      query: request => ({
+        url: `creatureType/${request.id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getCreatureTypes'],
+    }),
   }),
 });
 
 export interface GetCreatureTypeRequest {}
+
 export interface GetCreatureTypeResponse {
   total: number;
   items: CreatureType[];
@@ -27,4 +49,20 @@ export interface CreatureType {
   name: string;
 }
 
-export const { useGetCreatureTypesQuery } = creatureTypeApi;
+export interface CreateCreatureTypeRequest {
+  name: string;
+}
+
+export type CreateCreatureTypeResponse = CreatureType;
+
+export interface DeleteCreatureTypeRequest {
+  id: number;
+}
+
+export interface DeleteCreatureTypeResponse {}
+
+export const {
+  useGetCreatureTypesQuery,
+  useCreateCreatureTypeMutation,
+  useDeleteCreatureTypeMutation,
+} = creatureTypeApi;

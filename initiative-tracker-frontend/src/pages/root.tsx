@@ -1,9 +1,11 @@
-import { Breadcrumb, Layout, Menu, MenuProps, theme } from 'antd';
+// import './root.less';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
-import { ReactNode, SetStateAction } from 'react';
+import { SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
+import { Breadcrumb, Layout, Menu, MenuProps, theme } from 'antd';
+import { ReactNode } from 'react';
 import { AppRoute, appRoutes } from '../App';
 import { HomeOutlined } from '@ant-design/icons';
 

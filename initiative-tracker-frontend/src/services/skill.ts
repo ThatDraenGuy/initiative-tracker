@@ -11,13 +11,44 @@ const skillApi = api.injectEndpoints({
       }),
       providesTags: ['getSkills'],
     }),
+    createSkill: builder.mutation<CreateSkillResponse, CreateSkillRequest>({
+      query: request => ({
+        url: `skill`,
+        method: 'POST',
+        body: request,
+      }),
+      invalidatesTags: ['getSkills'],
+    }),
+    deleteSkill: builder.mutation<DeleteSkillResponse, DeleteSkillRequest>({
+      query: request => ({
+        url: `skill/${request.id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['getSkills'],
+    }),
   }),
 });
 
 export interface GetSkillsRequest {}
+
 export interface GetSkillsResponse {
   total: number;
   items: Skill[];
+}
+
+export interface CreateSkillRequest {
+  name: string;
+  abilityId: number;
+}
+
+export type CreateSkillResponse = Skill;
+
+export interface DeleteSkillRequest {
+  id: number;
+}
+
+export interface DeleteSkillResponse {
+  id: number;
 }
 
 export interface Skill {
@@ -26,4 +57,8 @@ export interface Skill {
   ability: Ability;
 }
 
-export const { useGetSkillsQuery } = skillApi;
+export const {
+  useGetSkillsQuery,
+  useCreateSkillMutation,
+  useDeleteSkillMutation,
+} = skillApi;
