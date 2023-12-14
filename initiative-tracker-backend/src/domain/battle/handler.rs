@@ -5,9 +5,12 @@ use actix_web::{
 use initiative_tracker_backend::{derive_request, derive_response};
 use itertools::Itertools;
 
-use super::{actions, Battle, CurrentStats, InitiativeEntry};
+use super::{actions, Battle, InitiativeEntry};
 use crate::{
-    domain::{battle_brief::handler::BattleBriefResponse, character::handler::CharacterResponse},
+    domain::{
+        battle_brief::handler::BattleBriefResponse, character::handler::CharacterResponse,
+        current_stats::handler::CurrentStatsResponse,
+    },
     errors::AppResult,
     DbPool, ValidJson,
 };
@@ -17,7 +20,8 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
         web::scope("/battle")
             .service(start)
             .service(find_by_id)
-            .service(end),
+            .service(end)
+            .service(next_initiative),
     );
 }
 
@@ -62,28 +66,6 @@ impl From<InitiativeEntry> for InitiativeEntryResponse {
     }
 }
 
-#[derive_response]
-pub struct CurrentStatsResponse {
-    pub id: i64,
-    pub hit_points: Option<i32>,
-    pub temp_hit_points: Option<i32>,
-    pub hit_dice_count: Option<i32>,
-    pub armor_class: Option<i32>,
-    pub speed: Option<i32>,
-}
-impl From<CurrentStats> for CurrentStatsResponse {
-    fn from(value: CurrentStats) -> Self {
-        Self {
-            id: value.current_stats_id,
-            hit_points: value.current_hit_points,
-            temp_hit_points: value.temporary_hit_points,
-            hit_dice_count: value.current_hit_dice_count,
-            armor_class: value.current_armor_class,
-            speed: value.current_speed,
-        }
-    }
-}
-
 #[get("/{id}")]
 async fn find_by_id(id: Path<i64>, db_pool: Data<DbPool>) -> AppResult<Json<BattleResponse>> {
     Ok(Json(actions::find_by_id(&db_pool, &id).await?.into()))
@@ -100,4 +82,9 @@ async fn start(
 #[delete("/{id}/end")]
 async fn end(id: Path<i64>, db_pool: Data<DbPool>) -> AppResult<Json<()>> {
     Ok(Json(actions::end(&db_pool, &id).await?))
+}
+
+#[post("/{id}/nextInitiative")]
+async fn next_initiative(id: Path<i64>, db_pool: Data<DbPool>) -> AppResult<Json<()>> {
+    Ok(Json(actions::next_initiative(&db_pool, &id).await?))
 }

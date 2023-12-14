@@ -102,7 +102,6 @@ function flattenChildren(array: WithChildren[]): any[] {
       result = result.concat(flattenChildren(elem.children));
     }
   });
-  console.log(result);
   return result;
 }
 

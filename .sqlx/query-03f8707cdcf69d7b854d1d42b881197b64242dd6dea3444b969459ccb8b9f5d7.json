@@ -1,0 +1,24 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT damage_with_type($1, $2, $3);\n                ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "damage_with_type",
+        "type_info": "Void"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "03f8707cdcf69d7b854d1d42b881197b64242dd6dea3444b969459ccb8b9f5d7"
+}

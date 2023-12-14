@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT damage($1, $2);\n                ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "damage",
+        "type_info": "Void"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "6066f9135c87203939f11b4b51051b4f77fbdd4cbadb3e0a6fca2914d4a72e7e"
+}

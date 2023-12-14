@@ -1,0 +1,58 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT *\n        FROM current_stats\n        WHERE current_stats_id = $1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "current_stats_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "character_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "current_hit_points",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "temporary_hit_points",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "current_hit_dice_count",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "current_armor_class",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 6,
+        "name": "current_speed",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "e04ea6e50b207795f372406249855e9d3078da507c615aff6a830f88258f7b98"
+}

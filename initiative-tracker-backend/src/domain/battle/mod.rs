@@ -1,6 +1,6 @@
 use initiative_tracker_backend::derive_entity;
 
-use super::{battle_brief::BattleBrief, character::Character};
+use super::{battle_brief::BattleBrief, character::Character, current_stats::CurrentStats};
 pub mod actions;
 pub mod handler;
 
@@ -46,17 +46,6 @@ impl InitiativeEntry {
             initiative_roll: brief.initiative_roll,
         }
     }
-}
-
-#[derive_entity]
-pub struct CurrentStats {
-    pub current_stats_id: i64,
-    pub character_id: i64,
-    pub current_hit_points: Option<i32>,
-    pub temporary_hit_points: Option<i32>,
-    pub current_hit_dice_count: Option<i32>,
-    pub current_armor_class: Option<i32>,
-    pub current_speed: Option<i32>,
 }
 
 pub struct StartedBattle {

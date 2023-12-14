@@ -97,3 +97,15 @@ pub async fn end(conn: &DbPool, id: &i64) -> AppResult<()> {
     .await?;
     Ok(())
 }
+
+pub async fn next_initiative(conn: &DbPool, id: &i64) -> AppResult<()> {
+    sqlx::query!(
+        r#"
+        SELECT * FROM next_initiative($1);
+        "#,
+        id,
+    )
+    .fetch_one(conn)
+    .await?;
+    Ok(())
+}

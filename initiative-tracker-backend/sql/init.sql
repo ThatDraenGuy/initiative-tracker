@@ -468,24 +468,24 @@ CREATE OR REPLACE FUNCTION damage_with_type(damage int4, dmg_tp_id int8, curr_st
   LANGUAGE plpgsql AS
 $func$
 DECLARE
-  modifier float4;
+  mod float4;
   actual_damage int4;
 BEGIN
-  SELECT modifier FROM damage_type_modifiers dtm
+  SELECT dtm.modifier FROM damage_type_modifiers dtm
   JOIN character c ON dtm.stat_block_id = c.stat_block_id
   JOIN current_stats cs ON c.character_id = cs.character_id
   WHERE cs.current_stats_id = curr_stats_id
     AND dtm.damage_type_id = dmg_tp_id
-  INTO modifier;
+  INTO mod;
 
-  IF modifier IS NULL
+  IF mod IS NULL
   THEN
     actual_damage = damage;
   ELSE
-    actual_damage = FLOOR(damage * modifier);
+    actual_damage = FLOOR(damage * mod);
   END IF;
 
-  SELECT damage(actual_damage, curr_stats_id);
+  PERFORM damage(actual_damage, curr_stats_id);
 END;
 $func$;
 --------------------------------------------------------------------

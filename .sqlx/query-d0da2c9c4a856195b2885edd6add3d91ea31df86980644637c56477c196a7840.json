@@ -1,0 +1,63 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE current_stats SET \n        current_hit_points = $1,\n        temporary_hit_points = $2,\n        current_hit_dice_count = $3,\n        current_armor_class = $4,\n        current_speed = $5\n        WHERE current_stats_id = $6\n        RETURNING *;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "current_stats_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "character_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "current_hit_points",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "temporary_hit_points",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "current_hit_dice_count",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "current_armor_class",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 6,
+        "name": "current_speed",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Int4",
+        "Int4",
+        "Int4",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "d0da2c9c4a856195b2885edd6add3d91ea31df86980644637c56477c196a7840"
+}
