@@ -3,7 +3,7 @@ mod errors;
 
 use ::config::Config;
 use actix_cors::Cors;
-use actix_web::{web, App, HttpServer};
+use actix_web::{middleware::Logger, web, App, HttpServer};
 use config::AppConfig;
 use domain::configure_domain;
 use dotenvy::dotenv;
@@ -41,11 +41,12 @@ async fn main() -> std::io::Result<()> {
         .await
         .unwrap();
 
-    // sqlx::migrate!().run(&pool).await.unwrap();
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     let server = HttpServer::new(move || {
         App::new()
             .wrap(Cors::permissive())
+            .wrap(Logger::default())
             .app_data(web::Data::new(pool.clone()))
             .service(web::scope("/api").configure(configure_domain))
     })
