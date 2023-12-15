@@ -37,7 +37,7 @@ const DamageTypeList = () => {
         <Space
           direction="horizontal"
           size="middle"
-          style={{ padding: token.sizeSM }}
+          style={{ padding: token.sizeSM, width: '100%', overflow: 'auto' }}
         >
           <Button
             icon={<PlusOutlined />}
@@ -70,6 +70,7 @@ const DamageTypeList = () => {
           dataSource={dataSource}
           rowKey={'id'}
           loading={isLoading}
+          style={{ width: '100%', overflow: 'auto' }}
         />
       </Space>
       {openedModal === 'create_damageType' && (

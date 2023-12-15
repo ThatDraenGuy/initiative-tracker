@@ -1,5 +1,4 @@
 import { Image, Row, Space } from 'antd';
-
 import { useTranslation } from 'react-i18next';
 
 const HomeScreen = () => {
