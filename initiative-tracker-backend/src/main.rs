@@ -43,13 +43,15 @@ async fn main() -> std::io::Result<()> {
 
     // sqlx::migrate!().run(&pool).await.unwrap();
 
-    HttpServer::new(move || {
+    let server = HttpServer::new(move || {
         App::new()
             .wrap(Cors::permissive())
             .app_data(web::Data::new(pool.clone()))
             .service(web::scope("/api").configure(configure_domain))
     })
-    .bind(("127.0.0.1", config.port.unwrap_or(8080)))?
-    .run()
-    .await
+    .bind(("127.0.0.1", config.port.unwrap_or(8080)))?;
+
+    println!("Server successfully started! 🚀");
+    println!("Accepting requests on port {}", config.port.unwrap_or(8080));
+    server.run().await
 }

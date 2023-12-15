@@ -2,8 +2,6 @@ import { Image, Row, Space } from 'antd';
 
 import { useTranslation } from 'react-i18next';
 
-const qrPath = '../../../icon/qr.png';
-
 const HomeScreen = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'pages.home' });
 
@@ -32,7 +30,8 @@ const HomeScreen = () => {
             <p>{t('head')}</p>
             <h2>{t('license')}</h2>
             <p>{t('license-text')}</p>
-            <Image src={qrPath} style={{ width: '25%' }} />
+            {/* @ts-ignore */}
+            <Image src="qr.png" style={{ width: '25%' }} />
           </div>
         </Row>
       </Space>

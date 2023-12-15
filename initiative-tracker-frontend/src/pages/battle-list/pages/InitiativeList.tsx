@@ -53,6 +53,7 @@ const InitiativeList = () => {
           size="middle"
           style={{ padding: token.sizeSM }}
         >
+          {/* @ts-ignore */}
           <Card>
             {t('titles.roundNumber', { roundNumber: battle?.roundNumber ?? 0 })}
           </Card>
@@ -74,6 +75,7 @@ const InitiativeList = () => {
             itemLayout="vertical"
             dataSource={entriesDataSource}
             renderItem={(entry, index) => (
+              //@ts-ignore
               <List.Item
                 key={entry.currentStats.id}
                 style={{
